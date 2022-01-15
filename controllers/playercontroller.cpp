@@ -3,25 +3,23 @@
 PlayerController::PlayerController(QObject *parent)
 {
     instance = new QMediaPlayer(parent);
+    playlist = new QMediaPlaylist(instance);
+    instance->setPlaylist(playlist);
 }
 
-void PlayerController::togglePlay()
+void PlayerController::togglePlayPause()
 {
-    //    QString vidstring = QFileDialog::getOpenFileName(this, "Select video file", QDir::homePath());
-    qDebug() << instance->state();
     switch (instance->state()) {
     case  QMediaPlayer::PlayingState:
         instance->pause();
         break;
     case QMediaPlayer::PausedState:
-        instance->play();
-        break;
     default:
-        QString vidstring = "C:\\dev\\c++\\MediaPlayer\\test.mp3";
-        instance->setMedia(QUrl::fromLocalFile(vidstring));
         instance->play();
-        qDebug() << instance->errorString();
     }
+
+    qDebug() << instance->state();
+    qDebug() << instance->errorString();
 
 }
 
@@ -30,7 +28,11 @@ void PlayerController::stop()
     instance->stop();
 }
 
-void PlayerController::onPlayStateChanged(bool state)
+void PlayerController::addToPlaylist(QStringList paths)
 {
-    playState = state;
+    for(const QString & path: paths){
+        playlist->addMedia(QMediaContent(QUrl::fromLocalFile(path)));
+    }
+
 }
+

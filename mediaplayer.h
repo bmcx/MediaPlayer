@@ -9,6 +9,7 @@
 #include <QDebug>
 
 #include "controllers/playercontroller.h"
+#include "constants.h"
 #include "utils.h"
 
 QT_BEGIN_NAMESPACE
@@ -33,6 +34,8 @@ private slots:
     void on_durationChanged(qint64 position);
 
     void on_btnPlay_clicked();
+
+    void on_actionOpenFile_triggered();
 
 private:
     Ui::MediaPlayer *ui;
