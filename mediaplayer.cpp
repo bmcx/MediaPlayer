@@ -13,7 +13,7 @@ MediaPlayer::MediaPlayer(QWidget *parent)
     connect(player->instance, SIGNAL(positionChanged(qint64)), this, SLOT(on_positionChanged(qint64)));
     connect(player->instance, SIGNAL(durationChanged(qint64)), this, SLOT(on_durationChanged(qint64)));
     connect(player->instance, SIGNAL(currentMediaChanged(QMediaContent)), this, SLOT(on_mediaChanged()));
-    connect(player->instance, SIGNAL(stateChanged(State)), this, SLOT(on_mediaChanged()));
+    connect(player->instance, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(on_mediaChanged()));
     connect(player->instance, SIGNAL(volumeChanged(int)), ui->sliderVolume, SLOT(setValue(int)));
 
     // playlist connections
@@ -124,12 +124,14 @@ void MediaPlayer::on_actionPSSlower_triggered()
     player->instance->setPlaybackRate(rate - 0.1);
 }
 
+/// jump forward 10 seconds
 void MediaPlayer::on_actionJumpForwards_triggered()
 {
-
+    player->changePositionBy(10);
 }
 
+/// jump backward 10 seconds
 void MediaPlayer::on_actionJumpBackward_triggered()
 {
-
+    player->changePositionBy(-10);
 }

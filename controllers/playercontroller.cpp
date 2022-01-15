@@ -39,3 +39,11 @@ void PlayerController::addToPlaylist(QStringList paths)
     }
 }
 
+/// change the position with given seconds
+void PlayerController::changePositionBy(int value)
+{
+    qint64 current = instance->position();
+    // current is in milliseconds so add the given value
+    instance->setPosition(current + (value * 1000));
+}
+
