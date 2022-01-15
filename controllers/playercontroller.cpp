@@ -6,6 +6,8 @@ PlayerController::PlayerController(QObject *parent)
     playlist = new QMediaPlaylist(instance);
     playlistItems = new  QStringList();
     instance->setPlaylist(playlist);
+    // set initial playback rate to 1
+    instance->setPlaybackRate(1);
 }
 
 void PlayerController::togglePlayPause()
