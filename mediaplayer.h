@@ -53,5 +53,6 @@ private:
     QString lastPath;
     QLabel *lblNowPlaying;
     QLabel *lblPlaybackRate;
+
 };
 #endif // MEDIAPLAYER_H

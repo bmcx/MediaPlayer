@@ -133,6 +133,7 @@ void MediaPlayer::on_playerStateChanged(QMediaPlayer::State state)
 
 // menu actions
 
+///
 void MediaPlayer::on_actionOpenFile_triggered()
 {
     QStringList filenames = QFileDialog::getOpenFileNames(this, "Open a File", lastPath, Constants::acceptedFileTypes);
@@ -194,3 +195,4 @@ void MediaPlayer::on_actionDecreaseVolume_triggered()
     int volume = player->instance->volume();
     player->instance->setVolume(volume-5);
 }
+
