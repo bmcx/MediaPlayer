@@ -17,6 +17,9 @@ public:
     void stop();
     void addToPlaylist(QStringList paths);
 
+public slots:
+    void changePositionBy(int value);
+
 private:
     QMediaPlaylist *playlist;
 
