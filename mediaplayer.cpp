@@ -11,7 +11,14 @@ MediaPlayer::MediaPlayer(QWidget *parent)
     connect(player->instance, SIGNAL(positionChanged(qint64)), this, SLOT(on_positionChanged(qint64)));
     connect(player->instance, SIGNAL(durationChanged(qint64)), this, SLOT(on_durationChanged(qint64)));
 
-//    ui->statusbar->addWidget(widget,1);
+    //    ui->statusbar->addWidget(widget,1);
+
+    // ui button conections
+    connect(ui->btnPrev, SIGNAL(clicked()), player->instance->playlist(), SLOT(previous()));
+    connect(ui->btnNext, SIGNAL(clicked()), player->instance->playlist(), SLOT(next()));
+
+    // set default path to home dir
+    lastPath = QDir::homePath();
 }
 
 MediaPlayer::~MediaPlayer()
@@ -31,7 +38,7 @@ void MediaPlayer::on_sliderVolume_sliderMoved(int position)
 
 void MediaPlayer::on_positionChanged(qint64 position)
 {
-//    qDebug() << position;
+    //    qDebug() << position;
     ui->sliderProgress->setValue(position);
     ui->lblCurrentTime->setText(Utils::formatDuration(position));
 }
@@ -44,15 +51,18 @@ void MediaPlayer::on_durationChanged(qint64 duration)
 }
 
 
+void MediaPlayer::on_actionOpenFile_triggered()
+{
+    QStringList filenames = QFileDialog::getOpenFileNames(this, "Open a File", lastPath, Constants::acceptedFileTypes);
+    if(!filenames.isEmpty()){
+        player->addToPlaylist(filenames);
+        // save last openned path
+        lastPath = QFileInfo(filenames[0]).path();
+    }
+}
+
+// control btns
 void MediaPlayer::on_btnPlay_clicked()
 {
     player->togglePlayPause();
 }
-
-
-void MediaPlayer::on_actionOpenFile_triggered()
-{
-    QStringList filenames = QFileDialog::getOpenFileNames(this, "Open a File","",Constants::acceptedFileTypes);
-    player->addToPlaylist(filenames);
-}
-

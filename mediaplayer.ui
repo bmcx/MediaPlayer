@@ -16,20 +16,17 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
+     <layout class="QVBoxLayout" name="layoutMain">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMaximumSize</enum>
       </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
+      <item>
+       <widget class="QListView" name="listView"/>
+      </item>
+     </layout>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="videoBox">
+     <layout class="QVBoxLayout" name="layoutBottom">
       <item>
        <layout class="QHBoxLayout" name="layoutProgress">
         <item>
