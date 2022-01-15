@@ -21,7 +21,7 @@
        <enum>QLayout::SetMaximumSize</enum>
       </property>
       <item>
-       <widget class="QListView" name="listView"/>
+       <widget class="QListView" name="lstPlaylist"/>
       </item>
      </layout>
     </item>
@@ -157,7 +157,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_6">
+         <widget class="QPushButton" name="btnShuffle">
           <property name="maximumSize">
            <size>
             <width>40</width>
@@ -165,12 +165,15 @@
            </size>
           </property>
           <property name="text">
-           <string>PushButton</string>
+           <string>shuffle</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_7">
+         <widget class="QPushButton" name="btnLoop">
           <property name="maximumSize">
            <size>
             <width>40</width>
@@ -178,7 +181,7 @@
            </size>
           </property>
           <property name="text">
-           <string>PushButton</string>
+           <string>loop</string>
           </property>
          </widget>
         </item>
@@ -259,8 +262,31 @@
      <string>Media</string>
     </property>
     <addaction name="actionOpenFile"/>
+    <addaction name="actionOpenPlaylist"/>
+    <addaction name="separator"/>
+    <addaction name="actionSavePlaylistToFile"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuPlayback">
+    <property name="title">
+     <string>Playback</string>
+    </property>
+    <widget class="QMenu" name="menuSpeed">
+     <property name="title">
+      <string>Speed</string>
+     </property>
+     <addaction name="actionPSFaster"/>
+     <addaction name="actionPSNormal"/>
+     <addaction name="actionPSSlower"/>
+    </widget>
+    <addaction name="menuSpeed"/>
+    <addaction name="separator"/>
+    <addaction name="actionJumpForwards"/>
+    <addaction name="actionJumpBackward"/>
    </widget>
    <addaction name="menuMedia"/>
+   <addaction name="menuPlayback"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionOpenFile">
@@ -272,6 +298,79 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionSavePlaylistToFile">
+   <property name="text">
+    <string>Save Playlist To File...</string>
+   </property>
+   <property name="toolTip">
+    <string>Save current playlist to a file</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Y</string>
+   </property>
+  </action>
+  <action name="actionOpenPlaylist">
+   <property name="text">
+    <string>Open Playlist</string>
+   </property>
+   <property name="toolTip">
+    <string>Open a playlist file</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+O</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+   <property name="toolTip">
+    <string>Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionPSFaster">
+   <property name="text">
+    <string>Faster</string>
+   </property>
+   <property name="toolTip">
+    <string>Increase the playback speed</string>
+   </property>
+  </action>
+  <action name="actionPSNormal">
+   <property name="text">
+    <string>Normal</string>
+   </property>
+   <property name="toolTip">
+    <string>Set playback speed back to normal</string>
+   </property>
+  </action>
+  <action name="actionPSSlower">
+   <property name="text">
+    <string>Slower</string>
+   </property>
+   <property name="toolTip">
+    <string>Decrease the playback speed</string>
+   </property>
+  </action>
+  <action name="actionJumpForwards">
+   <property name="text">
+    <string>Jump Forward</string>
+   </property>
+   <property name="toolTip">
+    <string>Seek 10 seconds forward</string>
+   </property>
+  </action>
+  <action name="actionJumpBackward">
+   <property name="text">
+    <string>Jump Backward</string>
+   </property>
+   <property name="toolTip">
+    <string>Seek 10 seconds backward</string>
    </property>
   </action>
  </widget>
