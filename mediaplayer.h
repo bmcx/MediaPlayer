@@ -3,10 +3,9 @@
 
 #include <QMainWindow>
 #include <QVideoWidget>
-#include <QLabel>
-#include <QSizePolicy>
-#include <QDateTime>
 #include <QDebug>
+#include <QtGui>
+#include <QStandardItemModel>
 
 #include "controllers/playercontroller.h"
 #include "constants.h"
@@ -33,9 +32,16 @@ private slots:
 
     void on_durationChanged(qint64 position);
 
+    void on_mediaChanged();
+
     void on_btnPlay_clicked();
 
     void on_actionOpenFile_triggered();
+
+    void on_playlistUpdated();
+
+
+    void on_btnShuffle_toggled(bool checked);
 
 private:
     Ui::MediaPlayer *ui;

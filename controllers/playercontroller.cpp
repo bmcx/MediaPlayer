@@ -4,6 +4,7 @@ PlayerController::PlayerController(QObject *parent)
 {
     instance = new QMediaPlayer(parent);
     playlist = new QMediaPlaylist(instance);
+    playlistItems = new  QStringList();
     instance->setPlaylist(playlist);
 }
 
@@ -32,7 +33,7 @@ void PlayerController::addToPlaylist(QStringList paths)
 {
     for(const QString & path: paths){
         playlist->addMedia(QMediaContent(QUrl::fromLocalFile(path)));
+        playlistItems->append(path);
     }
-
 }
 

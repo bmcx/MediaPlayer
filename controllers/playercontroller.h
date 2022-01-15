@@ -11,6 +11,7 @@ public:
     PlayerController(QObject *parent);
 
     QMediaPlayer *instance;
+    QStringList *playlistItems;
 
     void togglePlayPause();
     void stop();
