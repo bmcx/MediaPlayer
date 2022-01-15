@@ -1,0 +1,11 @@
+show now playing on bottom status bar
+plaing duration on task bar
+
+---
+
+seperated qmediaplayer to another file called player controller for better code structure
+added utils class with static members for adding reusable methods
+
+---
+
+bug: clicking on voulume slider doesn't change volume
