@@ -41,5 +41,6 @@ private:
     Ui::MediaPlayer *ui;
     PlayerController *player;
     QVideoWidget *vw;
+    QString lastPath;
 };
 #endif // MEDIAPLAYER_H
