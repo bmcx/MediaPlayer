@@ -8,12 +8,15 @@ MediaPlayer::MediaPlayer(QWidget *parent)
     ui->setupUi(this);
     player = new PlayerController(this);
     lblNowPlaying = new QLabel(this);
+    lblPlaybackRate = new QLabel(this);
 
     // connections for the signals from qmediaplayey instance
     connect(player->instance, SIGNAL(positionChanged(qint64)), this, SLOT(on_positionChanged(qint64)));
     connect(player->instance, SIGNAL(durationChanged(qint64)), this, SLOT(on_durationChanged(qint64)));
     connect(player->instance, SIGNAL(currentMediaChanged(QMediaContent)), this, SLOT(on_mediaChanged()));
     connect(player->instance, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(on_mediaChanged()));
+    connect(player->instance, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(on_playerStateChanged(QMediaPlayer::State)));
+    connect(player->instance, SIGNAL(playbackRateChanged(qreal)), this, SLOT(on_playbackRateChanged(qreal)));
     connect(player->instance, SIGNAL(volumeChanged(int)), ui->sliderVolume, SLOT(setValue(int)));
 
     // playlist connections
@@ -24,14 +27,23 @@ MediaPlayer::MediaPlayer(QWidget *parent)
     connect(ui->btnStop, SIGNAL(clicked()), player->instance, SLOT(stop()));
     connect(ui->btnNext, SIGNAL(clicked()), player->instance->playlist(), SLOT(next()));
 
+     // ui menu action connections
+    connect(ui->actionPrevious, SIGNAL(triggered()), player->instance->playlist(), SLOT(previous()));
+    connect(ui->actionStop, SIGNAL(triggered()), player->instance, SLOT(stop()));
+    connect(ui->actionNext, SIGNAL(triggered()), player->instance->playlist(), SLOT(next()));
+    connect(ui->actionMute, SIGNAL(toggled(bool)), player->instance, SLOT(setMuted(bool)));
+
     // set default path to home dir
     lastPath = QDir::homePath();
 
     // statusbar widget setup
     ui->statusbar->addPermanentWidget(lblNowPlaying, 1);
+    ui->statusbar->addPermanentWidget(lblPlaybackRate);
 
+    // set a default value for the label
+    lblPlaybackRate->setText("1.00x");
 
-//    playlistModel = new QStringListModel(this);
+    // playlistModel = new QStringListModel(this);
 
 }
 
@@ -59,25 +71,29 @@ void MediaPlayer::on_positionChanged(qint64 position)
 
 void MediaPlayer::on_durationChanged(qint64 duration)
 {
-    qDebug() << "Loaded media duration: "<< duration;
+    qDebug() << "Loaded media duration: " << duration;
     ui->sliderProgress->setMaximum(duration);
     ui->lblDuration->setText(Utils::formatDuration(duration));
 }
 
 void MediaPlayer::on_mediaChanged()
 {
-    if(!player->instance->currentMedia().isNull()){
+    if (!player->instance->currentMedia().isNull()) {
         qDebug() << player->instance->currentMedia().canonicalUrl().fileName();
         lblNowPlaying->setText(player->instance->currentMedia().canonicalUrl().fileName());
-    }else{
+    } else {
         lblNowPlaying->clear();
     }
-
 }
 
 void MediaPlayer::on_playlistUpdated()
 {
     qDebug() << "Media count: " << player->instance->playlist()->mediaCount();
+}
+
+void MediaPlayer::on_playbackRateChanged(qreal rate)
+{
+    lblPlaybackRate->setText(QString("%1x").arg(player->instance->playbackRate(),0,'f', 2, QChar('0')));
 }
 
 // control buttons
@@ -90,6 +106,29 @@ void MediaPlayer::on_btnPlay_clicked()
 void MediaPlayer::on_btnShuffle_toggled(bool checked)
 {
     qDebug() << checked;
+}
+
+void MediaPlayer::on_playerStateChanged(QMediaPlayer::State state)
+{
+    switch (state) {
+    case QMediaPlayer::PlayingState:
+        ui->actionPlay->setText("Pause");
+        ui->actionStop->setEnabled(true);
+        ui->menuSpeed->setEnabled(true);
+        ui->actionJumpForward->setEnabled(true);
+        ui->actionJumpBackward->setEnabled(true);
+        break;
+    case QMediaPlayer::PausedState:
+        ui->actionPlay->setText("Play");
+        break;
+    case QMediaPlayer::StoppedState:
+        ui->actionPlay->setText("Play");
+        ui->actionStop->setEnabled(false);
+        ui->menuSpeed->setEnabled(false);
+        ui->actionJumpForward->setEnabled(false);
+        ui->actionJumpBackward->setEnabled(false);
+        break;
+    }
 }
 
 // menu actions
@@ -124,14 +163,34 @@ void MediaPlayer::on_actionPSSlower_triggered()
     player->instance->setPlaybackRate(rate - 0.1);
 }
 
-/// jump forward 10 seconds
-void MediaPlayer::on_actionJumpForwards_triggered()
+/// jump forward 5 seconds
+void MediaPlayer::on_actionJumpForward_triggered()
 {
-    player->changePositionBy(10);
+    player->changePositionBy(5);
 }
 
-/// jump backward 10 seconds
+/// jump backward 5 seconds
 void MediaPlayer::on_actionJumpBackward_triggered()
 {
-    player->changePositionBy(-10);
+    player->changePositionBy(-5);
+}
+
+/// triggers the play or pause action according to the current state
+void MediaPlayer::on_actionPlay_triggered()
+{
+     player->togglePlayPause();
+}
+
+/// increase volume by increments of 5
+void MediaPlayer::on_actionIncreaseVolume_triggered()
+{
+    int volume = player->instance->volume();
+    player->instance->setVolume(volume+5);
+}
+
+/// decrease volume by decrements of 5
+void MediaPlayer::on_actionDecreaseVolume_triggered()
+{
+    int volume = player->instance->volume();
+    player->instance->setVolume(volume-5);
 }

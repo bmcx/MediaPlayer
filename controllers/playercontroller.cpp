@@ -21,7 +21,7 @@ void PlayerController::togglePlayPause()
         instance->play();
     }
 
-    qDebug() << instance->state();
+//    qDebug() << instance->state();
     qDebug() << instance->errorString();
 
 }
