@@ -31,7 +31,9 @@ void MediaPlayer::on_sliderVolume_sliderMoved(int position)
 
 void MediaPlayer::on_positionChanged(qint64 position)
 {
+//    qDebug() << position;
     ui->sliderProgress->setValue(position);
+    ui->lblCurrentTime->setText(Utils::formatDuration(position));
 }
 
 void MediaPlayer::on_durationChanged(qint64 duration)
@@ -44,6 +46,13 @@ void MediaPlayer::on_durationChanged(qint64 duration)
 
 void MediaPlayer::on_btnPlay_clicked()
 {
-    player->togglePlay();
+    player->togglePlayPause();
+}
+
+
+void MediaPlayer::on_actionOpenFile_triggered()
+{
+    QStringList filenames = QFileDialog::getOpenFileNames(this, "Open a File","",Constants::acceptedFileTypes);
+    player->addToPlaylist(filenames);
 }
 

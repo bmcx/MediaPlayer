@@ -2,21 +2,22 @@
 #define PLAYERCONTROLLER_H
 
 #include <QMediaPlayer>
+#include <QMediaPlaylist>
 #include <QFileDialog>
 
 class PlayerController
 {
 public:
     PlayerController(QObject *parent);
-    QMediaPlayer *instance;
-    void togglePlay();
-    void stop();
 
-private slots:
-    void onPlayStateChanged(bool state);
+    QMediaPlayer *instance;
+
+    void togglePlayPause();
+    void stop();
+    void addToPlaylist(QStringList paths);
 
 private:
-    bool playState;
+    QMediaPlaylist *playlist;
 
 };
 

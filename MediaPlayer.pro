@@ -9,12 +9,14 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    constants.cpp \
     controllers/playercontroller.cpp \
     main.cpp \
     mediaplayer.cpp \
     utils.cpp
 
 HEADERS += \
+    constants.h \
     controllers/playercontroller.h \
     mediaplayer.h \
     utils.h
