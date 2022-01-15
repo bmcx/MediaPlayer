@@ -6,10 +6,10 @@ MediaPlayer::MediaPlayer(QWidget *parent)
     , ui(new Ui::MediaPlayer)
 {
     ui->setupUi(this);
-    player = new QMediaPlayer(this);
+    player = new PlayerController(this);
 
-    connect(player, &QMediaPlayer::positionChanged, this, &MediaPlayer::on_positionChanged);
-    connect(player, &QMediaPlayer::durationChanged, this, &MediaPlayer::on_durationChanged);
+    connect(player->instance, SIGNAL(positionChanged(qint64)), this, SLOT(on_positionChanged(qint64)));
+    connect(player->instance, SIGNAL(durationChanged(qint64)), this, SLOT(on_durationChanged(qint64)));
 
 //    ui->statusbar->addWidget(widget,1);
 }
@@ -19,31 +19,14 @@ MediaPlayer::~MediaPlayer()
     delete ui;
 }
 
-
 void MediaPlayer::on_sliderProgress_sliderMoved(int position)
 {
-    player->setPosition(position);
+    player->instance->setPosition(position);
 }
-
 
 void MediaPlayer::on_sliderVolume_sliderMoved(int position)
 {
-    player->setVolume(position);
-}
-
-
-void MediaPlayer::on_pushButton_clicked()
-{
-    QString vidstring = QFileDialog::getOpenFileName(this, "Select video file", QDir::homePath());
-    player->setMedia(QUrl::fromLocalFile(vidstring));
-    player->play();
-    qDebug() << player->errorString();
-}
-
-
-void MediaPlayer::on_pushButton_2_clicked()
-{
-    player->stop();
+    player->instance->setVolume(position);
 }
 
 void MediaPlayer::on_positionChanged(qint64 position)
@@ -51,8 +34,16 @@ void MediaPlayer::on_positionChanged(qint64 position)
     ui->sliderProgress->setValue(position);
 }
 
-void MediaPlayer::on_durationChanged(qint64 position)
+void MediaPlayer::on_durationChanged(qint64 duration)
 {
-    ui->sliderProgress->setMaximum(position);
+    qDebug() << duration;
+    ui->sliderProgress->setMaximum(duration);
+    ui->lblDuration->setText(Utils::formatDuration(duration));
+}
+
+
+void MediaPlayer::on_btnPlay_clicked()
+{
+    player->togglePlay();
 }
 
