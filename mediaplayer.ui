@@ -282,11 +282,10 @@
     </widget>
     <addaction name="menuSpeed"/>
     <addaction name="separator"/>
-    <addaction name="actionJumpForwards"/>
+    <addaction name="actionJumpForward"/>
     <addaction name="actionJumpBackward"/>
     <addaction name="separator"/>
     <addaction name="actionPlay"/>
-    <addaction name="actionPause"/>
     <addaction name="actionStop"/>
     <addaction name="actionPrevious"/>
     <addaction name="actionNext"/>
@@ -328,7 +327,7 @@
   </action>
   <action name="actionOpenPlaylist">
    <property name="text">
-    <string>Open Playlist</string>
+    <string>Open Playlist...</string>
    </property>
    <property name="toolTip">
     <string>Open a playlist file</string>
@@ -372,20 +371,32 @@
     <string>Decrease the playback speed</string>
    </property>
   </action>
-  <action name="actionJumpForwards">
+  <action name="actionJumpForward">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Jump Forward</string>
    </property>
    <property name="toolTip">
-    <string>Seek 10 seconds forward</string>
+    <string>Seek 5 seconds forward</string>
+   </property>
+   <property name="shortcut">
+    <string>Right</string>
    </property>
   </action>
   <action name="actionJumpBackward">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Jump Backward</string>
    </property>
    <property name="toolTip">
-    <string>Seek 10 seconds backward</string>
+    <string>Seek 5 seconds backward</string>
+   </property>
+   <property name="shortcut">
+    <string>Left</string>
    </property>
   </action>
   <action name="actionPlay">
@@ -393,18 +404,16 @@
     <string>Play</string>
    </property>
    <property name="toolTip">
-    <string>Play selected media</string>
+    <string>Play/Pause selected media</string>
    </property>
-  </action>
-  <action name="actionPause">
-   <property name="text">
-    <string>Pause</string>
-   </property>
-   <property name="toolTip">
-    <string>Pause currently playing media</string>
+   <property name="shortcut">
+    <string>Space</string>
    </property>
   </action>
   <action name="actionStop">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Stop</string>
    </property>
@@ -432,13 +441,22 @@
    <property name="text">
     <string>Increase Volume</string>
    </property>
+   <property name="shortcut">
+    <string>Up</string>
+   </property>
   </action>
   <action name="actionDecreaseVolume">
    <property name="text">
     <string>Decrease Volume</string>
    </property>
+   <property name="shortcut">
+    <string>Down</string>
+   </property>
   </action>
   <action name="actionMute">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Mute</string>
    </property>

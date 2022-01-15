@@ -33,16 +33,18 @@ private slots:
     void on_btnPlay_clicked();
     void on_actionOpenFile_triggered();
     void on_playlistUpdated();
+    void on_playbackRateChanged(qreal rate);
     void on_btnShuffle_toggled(bool checked);
+    void on_playerStateChanged(QMediaPlayer::State state);
 
     void on_actionPSFaster_triggered();
     void on_actionPSNormal_triggered();
     void on_actionPSSlower_triggered();
-    void on_actionJumpForwards_triggered();
+    void on_actionJumpForward_triggered();
     void on_actionJumpBackward_triggered();
-
-
-
+    void on_actionPlay_triggered();
+    void on_actionIncreaseVolume_triggered();
+    void on_actionDecreaseVolume_triggered();
 
 private:
     Ui::MediaPlayer *ui;
@@ -50,5 +52,6 @@ private:
     QVideoWidget *vw;
     QString lastPath;
     QLabel *lblNowPlaying;
+    QLabel *lblPlaybackRate;
 };
 #endif // MEDIAPLAYER_H

@@ -10,6 +10,8 @@ seperated constant values to another file, to support code reuse
 ---
 shortcuts
 
+Up/Down arrow keys for volume increase/decrease
+Left/Right arrow keys for seek backward/forward 5 seconds
 M for mute
 
 ---
