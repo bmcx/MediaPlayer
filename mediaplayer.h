@@ -5,6 +5,7 @@
 #include <QVideoWidget>
 #include <QDebug>
 #include <QtGui>
+#include <QLabel>
 #include <QStandardItemModel>
 
 #include "controllers/playercontroller.h"
@@ -25,28 +26,29 @@ public:
 
 private slots:
     void on_sliderProgress_sliderMoved(int position);
-
     void on_sliderVolume_sliderMoved(int position);
-
     void on_positionChanged(qint64 position);
-
     void on_durationChanged(qint64 position);
-
     void on_mediaChanged();
-
     void on_btnPlay_clicked();
-
     void on_actionOpenFile_triggered();
-
     void on_playlistUpdated();
-
-
     void on_btnShuffle_toggled(bool checked);
+
+    void on_actionPSFaster_triggered();
+    void on_actionPSNormal_triggered();
+    void on_actionPSSlower_triggered();
+    void on_actionJumpForwards_triggered();
+    void on_actionJumpBackward_triggered();
+
+
+
 
 private:
     Ui::MediaPlayer *ui;
     PlayerController *player;
     QVideoWidget *vw;
     QString lastPath;
+    QLabel *lblNowPlaying;
 };
 #endif // MEDIAPLAYER_H

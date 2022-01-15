@@ -7,21 +7,30 @@ MediaPlayer::MediaPlayer(QWidget *parent)
 {
     ui->setupUi(this);
     player = new PlayerController(this);
+    lblNowPlaying = new QLabel(this);
 
+    // connections for the signals from qmediaplayey instance
     connect(player->instance, SIGNAL(positionChanged(qint64)), this, SLOT(on_positionChanged(qint64)));
     connect(player->instance, SIGNAL(durationChanged(qint64)), this, SLOT(on_durationChanged(qint64)));
     connect(player->instance, SIGNAL(currentMediaChanged(QMediaContent)), this, SLOT(on_mediaChanged()));
+    connect(player->instance, SIGNAL(stateChanged(State)), this, SLOT(on_mediaChanged()));
+    connect(player->instance, SIGNAL(volumeChanged(int)), ui->sliderVolume, SLOT(setValue(int)));
 
+    // playlist connections
     connect(player->instance->playlist(), SIGNAL(mediaChanged(int,int)), this, SLOT(on_playlistUpdated()));
-
-    //    ui->statusbar->addWidget(widget,1);
 
     // ui button connections
     connect(ui->btnPrev, SIGNAL(clicked()), player->instance->playlist(), SLOT(previous()));
+    connect(ui->btnStop, SIGNAL(clicked()), player->instance, SLOT(stop()));
     connect(ui->btnNext, SIGNAL(clicked()), player->instance->playlist(), SLOT(next()));
 
     // set default path to home dir
     lastPath = QDir::homePath();
+
+    // statusbar widget setup
+    ui->statusbar->addPermanentWidget(lblNowPlaying, 1);
+
+
 //    playlistModel = new QStringListModel(this);
 
 }
@@ -58,10 +67,32 @@ void MediaPlayer::on_durationChanged(qint64 duration)
 void MediaPlayer::on_mediaChanged()
 {
     if(!player->instance->currentMedia().isNull()){
-        qDebug() << player->instance->playlist()->objectName();
+        qDebug() << player->instance->currentMedia().canonicalUrl().fileName();
+        lblNowPlaying->setText(player->instance->currentMedia().canonicalUrl().fileName());
+    }else{
+        lblNowPlaying->clear();
     }
 
 }
+
+void MediaPlayer::on_playlistUpdated()
+{
+    qDebug() << "Media count: " << player->instance->playlist()->mediaCount();
+}
+
+// control buttons
+
+void MediaPlayer::on_btnPlay_clicked()
+{
+    player->togglePlayPause();
+}
+
+void MediaPlayer::on_btnShuffle_toggled(bool checked)
+{
+    qDebug() << checked;
+}
+
+// menu actions
 
 void MediaPlayer::on_actionOpenFile_triggered()
 {
@@ -73,19 +104,32 @@ void MediaPlayer::on_actionOpenFile_triggered()
     }
 }
 
-void MediaPlayer::on_playlistUpdated()
+/// increase playback rate by incrementing current rate by 0.1
+void MediaPlayer::on_actionPSFaster_triggered()
 {
-    qDebug() << "Media count: " << player->instance->playlist()->mediaCount();
+    qreal rate = player->instance->playbackRate();
+    player->instance->setPlaybackRate(rate + 0.1);
 }
 
-// control buttons
-void MediaPlayer::on_btnPlay_clicked()
+/// resets the playback rate to normal; rate(1)
+void MediaPlayer::on_actionPSNormal_triggered()
 {
-    player->togglePlayPause();
+    player->instance->setPlaybackRate(1);
 }
 
-void MediaPlayer::on_btnShuffle_toggled(bool checked)
+/// decrease playback rate by decrementing 0.1 from current rate
+void MediaPlayer::on_actionPSSlower_triggered()
 {
-    qDebug() << checked;
+    qreal rate = player->instance->playbackRate();
+    player->instance->setPlaybackRate(rate - 0.1);
 }
 
+void MediaPlayer::on_actionJumpForwards_triggered()
+{
+
+}
+
+void MediaPlayer::on_actionJumpBackward_triggered()
+{
+
+}

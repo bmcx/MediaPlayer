@@ -8,11 +8,22 @@ added utils class with static members for adding reusable methods
 seperated constant values to another file, to support code reuse
 
 ---
+shortcuts
 
-bug: clicking on voulume slider doesn't change volume
+M for mute
+
+---
+
+bug: clicking on progress slider doesn't move head clicked position
 bug: sometimes the audio duration returned from the slot 'durationChanged' and 'positionChanged' is larger than the actual length of the audio.
 
 
 ---
 resources
 https://stackoverflow.com/a/55761192 < for formatting seconds
+
+
+----
+
+https://stackoverflow.com/questions/53105343/is-it-possible-to-add-a-custom-widget-into-a-qlistview
+https://github.com/scopchanov/SO-MessageLog
