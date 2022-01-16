@@ -28,13 +28,11 @@ MediaPlayer::MediaPlayer(QWidget *parent)
     connect(ui->btnNext, SIGNAL(clicked()), player->instance->playlist(), SLOT(next()));
 
      // ui menu action connections
+    connect(ui->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
     connect(ui->actionPrevious, SIGNAL(triggered()), player->instance->playlist(), SLOT(previous()));
     connect(ui->actionStop, SIGNAL(triggered()), player->instance, SLOT(stop()));
     connect(ui->actionNext, SIGNAL(triggered()), player->instance->playlist(), SLOT(next()));
     connect(ui->actionMute, SIGNAL(toggled(bool)), player->instance, SLOT(setMuted(bool)));
-
-    // set default path to home dir
-    lastPath = QDir::homePath();
 
     // statusbar widget setup
     ui->statusbar->addPermanentWidget(lblNowPlaying, 1);
@@ -45,6 +43,7 @@ MediaPlayer::MediaPlayer(QWidget *parent)
 
     // playlistModel = new QStringListModel(this);
 
+    readSettings();
 }
 
 MediaPlayer::~MediaPlayer()
@@ -194,5 +193,43 @@ void MediaPlayer::on_actionDecreaseVolume_triggered()
 {
     int volume = player->instance->volume();
     player->instance->setVolume(volume-5);
+}
+
+/// read the saved configuration for media player main window
+void MediaPlayer::writeSettings()
+{
+    QSettings settings(Constants::creator, Constants::appName);
+
+    settings.beginGroup("Main");
+    // save current window size and position to use in next startup
+    settings.setValue("window_size", size());
+    settings.setValue("window_possition", pos());
+    // save last openned file path
+    settings.setValue("lastPath", lastPath);
+    // save volume level
+    settings.setValue("player_volume", player->instance->volume());
+    settings.endGroup();
+}
+
+/// write changes to the settings
+void MediaPlayer::readSettings()
+{
+    QSettings settings(Constants::creator, Constants::appName);
+
+    settings.beginGroup("Main");
+    // restore size and position from settings, if they don't exists use default values
+    resize(settings.value("window_size", QSize(850, 460)).toSize());
+    move(settings.value("window_possition", QPoint(200, 200)).toPoint());
+    // last opened file path, if not found uses OS's homepath as the default value
+    lastPath = settings.value("lastPath", QDir::homePath()).toString();
+    // load the stored volume or default to 100
+    player->instance->setVolume(settings.value("player_volume", 100).toInt());
+    settings.endGroup();
+}
+
+/// overrides the default close event to save changes
+void MediaPlayer::closeEvent (QCloseEvent *event){
+    // store changed settings
+    writeSettings();
 }
 

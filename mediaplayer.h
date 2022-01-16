@@ -7,6 +7,7 @@
 #include <QtGui>
 #include <QLabel>
 #include <QStandardItemModel>
+#include <QCloseEvent>
 
 #include "controllers/playercontroller.h"
 #include "constants.h"
@@ -53,6 +54,10 @@ private:
     QString lastPath;
     QLabel *lblNowPlaying;
     QLabel *lblPlaybackRate;
+
+    void readSettings();
+    void writeSettings();
+    void closeEvent(QCloseEvent *event);
 
 };
 #endif // MEDIAPLAYER_H

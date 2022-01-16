@@ -6,12 +6,22 @@ plaing duration on task bar
 seperated qmediaplayer to another file called player controller for better code structure
 added utils class with static members for adding reusable methods
 seperated constant values to another file, to support code reuse
+uses QSettings to store locally user changed values 
+
+---
+features
+
+UX:
+Save and use current size and position of the player window
+Save last openned file path to give user easy access to media files next startup
+Save last updated volume value 
 
 ---
 shortcuts
 
 Up/Down arrow keys for volume increase/decrease
 Left/Right arrow keys for seek backward/forward 5 seconds
+PageDown/PageUp keys for next/previous media
 M for mute
 
 ---
@@ -23,7 +33,7 @@ bug: sometimes the audio duration returned from the slot 'durationChanged' and '
 ---
 resources
 https://stackoverflow.com/a/55761192 < for formatting seconds
-
+https://www.youtube.com/watch?v=TNIkeFfzH-g&ab_channel=VoidRealms
 
 ----
 
