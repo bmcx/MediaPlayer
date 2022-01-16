@@ -37,7 +37,7 @@ private slots:
     void on_playbackRateChanged(qreal rate);
     void on_btnShuffle_toggled(bool checked);
     void on_playerStateChanged(QMediaPlayer::State state);
-
+    void on_videoAvailableChanged(bool available);
     void on_actionPSFaster_triggered();
     void on_actionPSNormal_triggered();
     void on_actionPSSlower_triggered();
@@ -50,7 +50,7 @@ private slots:
 private:
     Ui::MediaPlayer *ui;
     PlayerController *player;
-    QVideoWidget *vw;
+    QVideoWidget *videoWidget;
     QString lastPath;
     QLabel *lblNowPlaying;
     QLabel *lblPlaybackRate;
@@ -58,6 +58,7 @@ private:
     void readSettings();
     void writeSettings();
     void closeEvent(QCloseEvent *event);
+
 
 };
 #endif // MEDIAPLAYER_H
