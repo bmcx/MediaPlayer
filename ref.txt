@@ -16,6 +16,9 @@ Save and use current size and position of the player window
 Save last openned file path to give user easy access to media files next startup
 Save last updated volume value 
 
+Window title shows playing filename
+Window icon change according to playing/paused/stopped states
+
 ---
 shortcuts
 

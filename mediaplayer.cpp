@@ -51,16 +51,19 @@ MediaPlayer::~MediaPlayer()
     delete ui;
 }
 
+/// update media position when progress slider is moved
 void MediaPlayer::on_sliderProgress_sliderMoved(int position)
 {
     player->instance->setPosition(position);
 }
 
+/// update volume of the player instance when slider moved
 void MediaPlayer::on_sliderVolume_sliderMoved(int position)
 {
     player->instance->setVolume(position);
 }
 
+/// progress bar and current time label is updated
 void MediaPlayer::on_positionChanged(qint64 position)
 {
 //    qDebug() << position;
@@ -68,6 +71,8 @@ void MediaPlayer::on_positionChanged(qint64 position)
     ui->lblCurrentTime->setText(Utils::formatDuration(position));
 }
 
+/// when a file is loaded to be played this will be run
+/// the duration label and progress bar size will be updated
 void MediaPlayer::on_durationChanged(qint64 duration)
 {
     qDebug() << "Loaded media duration: " << duration;
@@ -75,11 +80,15 @@ void MediaPlayer::on_durationChanged(qint64 duration)
     ui->lblDuration->setText(Utils::formatDuration(duration));
 }
 
+/// triggers ui updates when current playing media is changed.
+/// Window title and statusbar label text will be updated
 void MediaPlayer::on_mediaChanged()
 {
     if (!player->instance->currentMedia().isNull()) {
-        qDebug() << player->instance->currentMedia().canonicalUrl().fileName();
-        lblNowPlaying->setText(player->instance->currentMedia().canonicalUrl().fileName());
+        QString file = player->instance->currentMedia().canonicalUrl().fileName();
+        qDebug() << file;
+        lblNowPlaying->setText(file);
+        this->setWindowTitle(QString("%1 - %2").arg(file).arg(Constants::appName));
     } else {
         lblNowPlaying->clear();
     }
@@ -90,6 +99,7 @@ void MediaPlayer::on_playlistUpdated()
     qDebug() << "Media count: " << player->instance->playlist()->mediaCount();
 }
 
+/// update playback rate label on statusbar when rate chaged
 void MediaPlayer::on_playbackRateChanged(qreal rate)
 {
     lblPlaybackRate->setText(QString("%1x").arg(player->instance->playbackRate(),0,'f', 2, QChar('0')));
@@ -107,6 +117,7 @@ void MediaPlayer::on_btnShuffle_toggled(bool checked)
     qDebug() << checked;
 }
 
+/// update ui according to varoius player states like plaing/paused/stopped
 void MediaPlayer::on_playerStateChanged(QMediaPlayer::State state)
 {
     switch (state) {
@@ -116,9 +127,17 @@ void MediaPlayer::on_playerStateChanged(QMediaPlayer::State state)
         ui->menuSpeed->setEnabled(true);
         ui->actionJumpForward->setEnabled(true);
         ui->actionJumpBackward->setEnabled(true);
+
+        setWindowIcon(QIcon(Constants::pauseIcon));
+        ui->actionPlay->setIcon(QIcon(Constants::pauseIcon));
+        ui->btnPlay->setIcon(QIcon(Constants::pauseIcon));
         break;
     case QMediaPlayer::PausedState:
         ui->actionPlay->setText("Play");
+
+        setWindowIcon(QIcon(Constants::playIcon));
+        ui->actionPlay->setIcon(QIcon(Constants::playIcon));
+        ui->btnPlay->setIcon(QIcon(Constants::playIcon));
         break;
     case QMediaPlayer::StoppedState:
         ui->actionPlay->setText("Play");
@@ -126,6 +145,10 @@ void MediaPlayer::on_playerStateChanged(QMediaPlayer::State state)
         ui->menuSpeed->setEnabled(false);
         ui->actionJumpForward->setEnabled(false);
         ui->actionJumpBackward->setEnabled(false);
+
+        setWindowIcon(QIcon(Constants::appIcon));
+        ui->actionPlay->setIcon(QIcon(Constants::playIcon));
+        ui->btnPlay->setIcon(QIcon(Constants::playIcon));
         break;
     }
 }
