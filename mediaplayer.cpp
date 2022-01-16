@@ -33,7 +33,6 @@ MediaPlayer::MediaPlayer(QWidget *parent)
     connect(ui->actionPrevious, SIGNAL(triggered()), player->instance->playlist(), SLOT(previous()));
     connect(ui->actionStop, SIGNAL(triggered()), player->instance, SLOT(stop()));
     connect(ui->actionNext, SIGNAL(triggered()), player->instance->playlist(), SLOT(next()));
-    connect(ui->actionMute, SIGNAL(toggled(bool)), player->instance, SLOT(setMuted(bool)));
 
     // statusbar widget setup
     ui->statusbar->addPermanentWidget(lblNowPlaying, 1);
@@ -52,6 +51,8 @@ MediaPlayer::MediaPlayer(QWidget *parent)
     readSettings();
     // update window title from constants
     setWindowTitle(Constants::appName);
+    // update volume icons after loading saved values
+    update_volumeIcons();
 }
 
 MediaPlayer::~MediaPlayer()
@@ -69,6 +70,7 @@ void MediaPlayer::on_sliderProgress_sliderMoved(int position)
 void MediaPlayer::on_sliderVolume_sliderMoved(int position)
 {
     player->instance->setVolume(position);
+    update_volumeIcons();
 }
 
 /// progress bar and current time label is updated
@@ -123,7 +125,20 @@ void MediaPlayer::on_btnPlay_clicked()
 
 void MediaPlayer::on_btnShuffle_toggled(bool checked)
 {
-    qDebug() << checked;
+    if(checked){
+        player->instance->playlist()->setPlaybackMode(QMediaPlaylist::PlaybackMode::Random);
+    }else{
+        player->instance->playlist()->setPlaybackMode(QMediaPlaylist::PlaybackMode::Sequential);
+    }
+}
+
+void MediaPlayer::on_btnLoop_toggled(bool checked)
+{
+    if(checked){
+        player->instance->playlist()->setPlaybackMode(QMediaPlaylist::PlaybackMode::Loop);
+    }else{
+        player->instance->playlist()->setPlaybackMode(QMediaPlaylist::PlaybackMode::Sequential);
+    }
 }
 
 /// update ui according to varoius player states like plaing/paused/stopped
@@ -137,14 +152,14 @@ void MediaPlayer::on_playerStateChanged(QMediaPlayer::State state)
         ui->actionJumpForward->setEnabled(true);
         ui->actionJumpBackward->setEnabled(true);
 
-        setWindowIcon(QIcon(Constants::pauseIcon));
+        setWindowIcon(QIcon(Constants::playIcon));
         ui->actionPlay->setIcon(QIcon(Constants::pauseIcon));
         ui->btnPlay->setIcon(QIcon(Constants::pauseIcon));
         break;
     case QMediaPlayer::PausedState:
         ui->actionPlay->setText("Play");
 
-        setWindowIcon(QIcon(Constants::playIcon));
+        setWindowIcon(QIcon(Constants::pauseIcon));
         ui->actionPlay->setIcon(QIcon(Constants::playIcon));
         ui->btnPlay->setIcon(QIcon(Constants::playIcon));
         break;
@@ -166,11 +181,18 @@ void MediaPlayer::on_playerStateChanged(QMediaPlayer::State state)
 void MediaPlayer::on_videoAvailableChanged(bool available)
 {
     if(available){
-        ui->layoutMain->removeWidget(ui->lstPlaylist);
+        ui->layoutMain->removeWidget(ui->bg);
         ui->layoutMain->addWidget(videoWidget);
-//        ui->layoutMain->addWidget(ui->lstPlaylist);
+        // a bit of a workaround to strech player widget by using vspacer
         ui->layoutMain->setStretch(0,0);
+        // setting the strech of the video widget to full
         ui->layoutMain->setStretch(1,1);
+
+        connect(ui->actionFullscreen, SIGNAL(toggled(bool)), videoWidget, SLOT(setFullScreen(bool)));
+        ui->actionFullscreen->setEnabled(true);
+    }else{
+        ui->actionFullscreen->setEnabled(false);
+        disconnect(ui->actionFullscreen, SIGNAL(toggled(bool)), videoWidget, SLOT(setFullScreen(bool)));
     }
 }
 
@@ -239,6 +261,12 @@ void MediaPlayer::on_actionDecreaseVolume_triggered()
     player->instance->setVolume(volume-5);
 }
 
+void MediaPlayer::on_actionMute_toggled(bool muted)
+{
+    player->instance->setMuted(muted);
+    update_volumeIcons();
+}
+
 /// read the saved configuration for media player main window
 void MediaPlayer::writeSettings()
 {
@@ -277,3 +305,20 @@ void MediaPlayer::closeEvent (QCloseEvent *event){
     writeSettings();
 }
 
+/// update volume icons with current state of the player
+void MediaPlayer::update_volumeIcons()
+{
+    int volume = player->instance->volume();
+    // check if the player is muted or not
+    if(ui->actionMute->isChecked()){
+        ui->lblVolumeIcon->setPixmap(QPixmap(Constants::volumeMuteIcon));
+    }else{
+        if(volume > 50){
+            ui->lblVolumeIcon->setPixmap(QPixmap(Constants::volumeUpIcon));
+        }else if(volume == 0){
+            ui->lblVolumeIcon->setPixmap(QPixmap(Constants::volumeMuteIcon));
+        }else{
+            ui->lblVolumeIcon->setPixmap(QPixmap(Constants::volumeDownIcon));
+        }
+    }
+}

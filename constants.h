@@ -13,6 +13,9 @@ public:
     static const QString playIcon;
     static const QString pauseIcon;
     static const QString appIcon;
+    static const QString volumeUpIcon;
+    static const QString volumeDownIcon;
+    static const QString volumeMuteIcon;
 
 };
 

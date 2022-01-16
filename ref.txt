@@ -10,6 +10,8 @@ uses QSettings to store locally user changed values
 
 ---
 features
+Basic media player functions
+ - Select files
 
 UX:
 Save and use current size and position of the player window
@@ -18,6 +20,8 @@ Save last updated volume value
 
 Window title shows playing filename
 Window icon change according to playing/paused/stopped states
+
+Voulume level icons for 0(mute), 0-50, 50-100 
 
 ---
 shortcuts
@@ -31,11 +35,12 @@ M for mute
 
 bug: clicking on progress slider doesn't move head clicked position
 bug: sometimes the audio duration returned from the slot 'durationChanged' and 'positionChanged' is larger than the actual length of the audio.
-
+bug: QVideoWidget's fullscreen state will open another window and the current window won't have focus so keybinds wouldn't work to leave from fullscreen mode.
 
 ---
 resources
 https://stackoverflow.com/a/55761192 < for formatting seconds
+https://stackoverflow.com/a/52151020 < video widget double click fullscreen
 https://www.youtube.com/watch?v=TNIkeFfzH-g&ab_channel=VoidRealms
 
 ----
