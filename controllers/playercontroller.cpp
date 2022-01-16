@@ -10,6 +10,7 @@ PlayerController::PlayerController(QObject *parent)
     instance->setPlaybackRate(1);
 }
 
+/// toggle the play/pause state accordingly
 void PlayerController::togglePlayPause()
 {
     switch (instance->state()) {
@@ -21,16 +22,18 @@ void PlayerController::togglePlayPause()
         instance->play();
     }
 
-//    qDebug() << instance->state();
-    qDebug() << instance->errorString();
+    qDebug() << "Player state:" << instance->state();
+    qDebug() << "Player errors:" << instance->errorString();
 
 }
 
+/// stops the player playback
 void PlayerController::stop()
 {
     instance->stop();
 }
 
+/// add given paths to the current playlist
 void PlayerController::addToPlaylist(QStringList paths)
 {
     for(const QString & path: paths){

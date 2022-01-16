@@ -43,7 +43,10 @@ MediaPlayer::MediaPlayer(QWidget *parent)
 
     // playlistModel = new QStringListModel(this);
 
+    // load saved settings
     readSettings();
+    // update window title from constants
+    setWindowTitle(Constants::appName);
 }
 
 MediaPlayer::~MediaPlayer()
@@ -75,7 +78,7 @@ void MediaPlayer::on_positionChanged(qint64 position)
 /// the duration label and progress bar size will be updated
 void MediaPlayer::on_durationChanged(qint64 duration)
 {
-    qDebug() << "Loaded media duration: " << duration;
+    qDebug() << "Loaded media duration(ms):" << duration;
     ui->sliderProgress->setMaximum(duration);
     ui->lblDuration->setText(Utils::formatDuration(duration));
 }
@@ -86,17 +89,18 @@ void MediaPlayer::on_mediaChanged()
 {
     if (!player->instance->currentMedia().isNull()) {
         QString file = player->instance->currentMedia().canonicalUrl().fileName();
-        qDebug() << file;
+        qDebug() << "Now playing:" << file;
         lblNowPlaying->setText(file);
-        this->setWindowTitle(QString("%1 - %2").arg(file).arg(Constants::appName));
+        setWindowTitle(QString("%1 - %2").arg(file).arg(Constants::appName));
     } else {
         lblNowPlaying->clear();
+        setWindowTitle(Constants::appName);
     }
 }
 
 void MediaPlayer::on_playlistUpdated()
 {
-    qDebug() << "Media count: " << player->instance->playlist()->mediaCount();
+    qDebug() << "Media count:" << player->instance->playlist()->mediaCount();
 }
 
 /// update playback rate label on statusbar when rate chaged
@@ -149,6 +153,7 @@ void MediaPlayer::on_playerStateChanged(QMediaPlayer::State state)
         setWindowIcon(QIcon(Constants::appIcon));
         ui->actionPlay->setIcon(QIcon(Constants::playIcon));
         ui->btnPlay->setIcon(QIcon(Constants::playIcon));
+        setWindowTitle(Constants::appName);
         break;
     }
 }
