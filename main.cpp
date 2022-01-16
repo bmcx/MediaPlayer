@@ -15,8 +15,7 @@ int main(int argc, char *argv[])
     // QString style = QLatin1String(styleFile.readAll());
     // a.setStyleSheet(style);
 
-    /// maybe add a theme selector to settings?
-    // a.setStyle("fusion");
+    a.setStyle("fusion");
 
     MediaPlayer w;
     w.ensurePolished();
