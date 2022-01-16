@@ -52,6 +52,10 @@ private slots:
 
 
 
+    void on_actionSavePlaylistToFile_triggered();
+
+    void on_actionOpenPlaylist_triggered();
+
 private:
     Ui::MediaPlayer *ui;
     PlayerController *player;

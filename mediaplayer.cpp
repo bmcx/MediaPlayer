@@ -181,9 +181,9 @@ void MediaPlayer::on_playerStateChanged(QMediaPlayer::State state)
 void MediaPlayer::on_videoAvailableChanged(bool available)
 {
     if(available){
-        ui->layoutMain->removeWidget(ui->bg);
-        ui->layoutMain->addWidget(videoWidget);
+        ui->layoutMain->replaceWidget(ui->bg, videoWidget);
         // a bit of a workaround to strech player widget by using vspacer
+        // use setStrech to hide spacer width
         ui->layoutMain->setStretch(0,0);
         // setting the strech of the video widget to full
         ui->layoutMain->setStretch(1,1);
@@ -191,17 +191,22 @@ void MediaPlayer::on_videoAvailableChanged(bool available)
         connect(ui->actionFullscreen, SIGNAL(toggled(bool)), videoWidget, SLOT(setFullScreen(bool)));
         ui->actionFullscreen->setEnabled(true);
     }else{
+        ui->layoutMain->replaceWidget(videoWidget, ui->bg);
+        ui->layoutMain->setStretch(0,0);
+        ui->layoutMain->setStretch(1,0);
+        ui->layoutMain->setStretch(2,0);
         ui->actionFullscreen->setEnabled(false);
         disconnect(ui->actionFullscreen, SIGNAL(toggled(bool)), videoWidget, SLOT(setFullScreen(bool)));
     }
+    qDebug() << available;
 }
 
 // menu actions
 
-///
+/// open files and add them to playlist
 void MediaPlayer::on_actionOpenFile_triggered()
 {
-    QStringList filenames = QFileDialog::getOpenFileNames(this, "Open a File", lastPath, Constants::acceptedFileTypes);
+    QStringList filenames = QFileDialog::getOpenFileNames(this, "Open Files", lastPath, Constants::acceptedFileTypes);
     if(!filenames.isEmpty()){
         player->addToPlaylist(filenames);
         // save last openned path
@@ -261,10 +266,25 @@ void MediaPlayer::on_actionDecreaseVolume_triggered()
     player->instance->setVolume(volume-5);
 }
 
+/// handles muted or unmuted state
 void MediaPlayer::on_actionMute_toggled(bool muted)
 {
     player->instance->setMuted(muted);
     update_volumeIcons();
+}
+
+/// save a playlist to a local file
+void MediaPlayer::on_actionSavePlaylistToFile_triggered()
+{
+    QString filename =QFileDialog::getSaveFileName(this,"Save file", lastPath, Constants::acceptedPlaylistFileTypes);
+    player->instance->playlist()->save(QUrl::fromLocalFile(filename),"m3u");
+}
+
+/// open a saved playlist from a local file
+void MediaPlayer::on_actionOpenPlaylist_triggered()
+{
+    QString filename = QFileDialog::getOpenFileName(this, "Open a File", lastPath, Constants::acceptedPlaylistFileTypes);
+    player->instance->playlist()->load(QUrl::fromLocalFile(filename));
 }
 
 /// read the saved configuration for media player main window
@@ -322,3 +342,4 @@ void MediaPlayer::update_volumeIcons()
         }
     }
 }
+
