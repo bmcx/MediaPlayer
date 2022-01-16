@@ -1,10 +1,9 @@
 #include "utils.h"
 
-Utils::Utils()
-{
+Utils::Utils() {}
 
-}
-
+/// Formats a given duration in milliseconds to hh:mm:ss or mm:ss
+/// only if h>0 the hh:mm:ss format will be used
 QString Utils::formatDuration(qint64 duration)
 {
     QString timeString = "--:--";
