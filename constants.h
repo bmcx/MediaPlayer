@@ -10,6 +10,10 @@ public:
     static const QString acceptedFileTypes;
     static const QString creator;
     static const QString appName;
+    static const QString playIcon;
+    static const QString pauseIcon;
+    static const QString appIcon;
+
 };
 
 #endif // CONSTANTS_H
