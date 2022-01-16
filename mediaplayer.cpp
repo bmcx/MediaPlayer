@@ -17,6 +17,7 @@ MediaPlayer::MediaPlayer(QWidget *parent)
     connect(player->instance, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(on_mediaChanged()));
     connect(player->instance, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(on_playerStateChanged(QMediaPlayer::State)));
     connect(player->instance, SIGNAL(playbackRateChanged(qreal)), this, SLOT(on_playbackRateChanged(qreal)));
+    connect(player->instance, SIGNAL(videoAvailableChanged(bool)), this, SLOT(on_videoAvailableChanged(bool)));
     connect(player->instance, SIGNAL(volumeChanged(int)), ui->sliderVolume, SLOT(setValue(int)));
 
     // playlist connections
@@ -42,6 +43,10 @@ MediaPlayer::MediaPlayer(QWidget *parent)
     lblPlaybackRate->setText("1.00x");
 
     // playlistModel = new QStringListModel(this);
+
+    videoWidget = new QVideoWidget();
+    ui->layoutMain->setAlignment(Qt::AlignCenter);
+    player->instance->setVideoOutput(videoWidget);
 
     // load saved settings
     readSettings();
@@ -155,6 +160,17 @@ void MediaPlayer::on_playerStateChanged(QMediaPlayer::State state)
         ui->btnPlay->setIcon(QIcon(Constants::playIcon));
         setWindowTitle(Constants::appName);
         break;
+    }
+}
+
+void MediaPlayer::on_videoAvailableChanged(bool available)
+{
+    if(available){
+        ui->layoutMain->removeWidget(ui->lstPlaylist);
+        ui->layoutMain->addWidget(videoWidget);
+//        ui->layoutMain->addWidget(ui->lstPlaylist);
+        ui->layoutMain->setStretch(0,0);
+        ui->layoutMain->setStretch(1,1);
     }
 }
 

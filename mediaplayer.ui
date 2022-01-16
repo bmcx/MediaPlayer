@@ -35,7 +35,7 @@
      <number>0</number>
     </property>
     <item>
-     <layout class="QVBoxLayout" name="layoutMain">
+     <layout class="QHBoxLayout" name="layoutMain" stretch="0,0">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -45,12 +45,28 @@
       <item>
        <widget class="QListView" name="lstPlaylist"/>
       </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
      </layout>
     </item>
     <item>
      <layout class="QVBoxLayout" name="layoutBottom">
       <property name="spacing">
        <number>4</number>
+      </property>
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinimumSize</enum>
       </property>
       <property name="leftMargin">
        <number>4</number>
@@ -66,8 +82,17 @@
       </property>
       <item>
        <layout class="QHBoxLayout" name="layoutProgress">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetFixedSize</enum>
+        </property>
         <item>
          <widget class="QLabel" name="lblCurrentTime">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>20</height>
+           </size>
+          </property>
           <property name="text">
            <string>--:--</string>
           </property>
@@ -97,6 +122,12 @@
         </item>
         <item>
          <widget class="QLabel" name="lblDuration">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>20</height>
+           </size>
+          </property>
           <property name="text">
            <string>--:--</string>
           </property>
@@ -106,6 +137,9 @@
       </item>
       <item>
        <layout class="QHBoxLayout" name="layoutControls">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetFixedSize</enum>
+        </property>
         <item>
          <widget class="QPushButton" name="btnPlay">
           <property name="maximumSize">
@@ -127,7 +161,7 @@
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer">
+         <spacer name="space_1">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -215,7 +249,7 @@
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_2">
+         <spacer name="space_2">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -280,7 +314,7 @@
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_3">
+         <spacer name="space_3">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -294,10 +328,16 @@
         </item>
         <item>
          <layout class="QHBoxLayout" name="layoutVolume">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMinimumSize</enum>
+          </property>
           <item>
            <layout class="QHBoxLayout" name="layoutVolLabel">
             <property name="spacing">
              <number>0</number>
+            </property>
+            <property name="sizeConstraint">
+             <enum>QLayout::SetMinimumSize</enum>
             </property>
             <item>
              <widget class="QLabel" name="lblVolume">
@@ -307,7 +347,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="label_3">
+             <widget class="QLabel" name="percentages">
               <property name="text">
                <string>%</string>
               </property>
@@ -402,9 +442,15 @@
     <addaction name="actionDecreaseVolume"/>
     <addaction name="actionMute"/>
    </widget>
+   <widget class="QMenu" name="menuVideo">
+    <property name="title">
+     <string>Video</string>
+    </property>
+   </widget>
    <addaction name="menuMedia"/>
    <addaction name="menuPlayback"/>
    <addaction name="menuAudio"/>
+   <addaction name="menuVideo"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionOpenFile">
@@ -624,6 +670,11 @@
    </property>
    <property name="shortcut">
     <string>M</string>
+   </property>
+  </action>
+  <action name="actionFullscreen">
+   <property name="text">
+    <string>Fullscreen</string>
    </property>
   </action>
  </widget>
