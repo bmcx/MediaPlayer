@@ -11,7 +11,6 @@ CONFIG += c++11
 SOURCES += \
     constants.cpp \
     controllers/playercontroller.cpp \
-    controllers/settingscontroller.cpp \
     main.cpp \
     mediaplayer.cpp \
     utils.cpp
@@ -19,7 +18,6 @@ SOURCES += \
 HEADERS += \
     constants.h \
     controllers/playercontroller.h \
-    controllers/settingscontroller.h \
     mediaplayer.h \
     utils.h
 

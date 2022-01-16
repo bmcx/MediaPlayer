@@ -25,6 +25,7 @@
         <file>icons/open_file.png</file>
         <file>icons/save.png</file>
         <file>icons/open_playlist.png</file>
+        <file>icons/app_icon.png</file>
     </qresource>
     <qresource prefix="/qss">
         <file>darkeum.qss</file>
