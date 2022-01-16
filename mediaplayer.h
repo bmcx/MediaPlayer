@@ -36,8 +36,10 @@ private slots:
     void on_playlistUpdated();
     void on_playbackRateChanged(qreal rate);
     void on_btnShuffle_toggled(bool checked);
+    void on_btnLoop_toggled(bool checked);
     void on_playerStateChanged(QMediaPlayer::State state);
     void on_videoAvailableChanged(bool available);
+
     void on_actionPSFaster_triggered();
     void on_actionPSNormal_triggered();
     void on_actionPSSlower_triggered();
@@ -46,6 +48,9 @@ private slots:
     void on_actionPlay_triggered();
     void on_actionIncreaseVolume_triggered();
     void on_actionDecreaseVolume_triggered();
+    void on_actionMute_toggled(bool value);
+
+
 
 private:
     Ui::MediaPlayer *ui;
@@ -58,6 +63,7 @@ private:
     void readSettings();
     void writeSettings();
     void closeEvent(QCloseEvent *event);
+    void update_volumeIcons();
 
 
 };
