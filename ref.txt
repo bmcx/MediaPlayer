@@ -12,6 +12,8 @@ uses QSettings to store locally user changed values
 features
 Basic media player functions
  - Select files
+ 
+Save playlist to file, Load playlist from a file
 
 UX:
 Save and use current size and position of the player window
