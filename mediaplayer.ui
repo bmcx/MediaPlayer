@@ -15,8 +15,26 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item>
      <layout class="QVBoxLayout" name="layoutMain">
+      <property name="spacing">
+       <number>0</number>
+      </property>
       <property name="sizeConstraint">
        <enum>QLayout::SetMaximumSize</enum>
       </property>
@@ -27,6 +45,18 @@
     </item>
     <item>
      <layout class="QVBoxLayout" name="layoutBottom">
+      <property name="spacing">
+       <number>4</number>
+      </property>
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
       <item>
        <layout class="QHBoxLayout" name="layoutProgress">
         <item>
@@ -50,6 +80,42 @@
             <height>16</height>
            </size>
           </property>
+          <property name="styleSheet">
+           <string notr="true">#slider::groove:horizontal {
+     background:#000;
+     padding-top:-20px;
+     padding-bottom:-20px;
+     height:45px;
+ }
+ 
+#slider::handle:horizontal {
+     background:url(:/img/ball1.png);
+     height:49px;
+     width: 41px;
+     margin: -3px 0;
+ }
+ 
+#slider::add-page:horizontal {
+    background: #000;
+ }
+ 
+#howFar::groove:horizontal {
+ 
+     padding-top:-20px;
+     padding-bottom:-20px;
+     height:2px;
+ }
+ 
+#howFar::handle:horizontal {
+     background:url(:/img/handle.png);
+     background-repeat:no-repeat;
+ }
+ 
+#howFar::add-page:horizontal {
+    background: #000;
+    height:2px;
+ }</string>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -70,12 +136,19 @@
          <widget class="QPushButton" name="btnPlay">
           <property name="maximumSize">
            <size>
-            <width>40</width>
-            <height>40</height>
+            <width>30</width>
+            <height>30</height>
            </size>
           </property>
-          <property name="text">
-           <string>Start</string>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/icons/icons/play.png</normaloff>:/icons/icons/play.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
           </property>
          </widget>
         </item>
@@ -89,8 +162,8 @@
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>16</width>
-            <height>40</height>
+            <width>12</width>
+            <height>30</height>
            </size>
           </property>
          </spacer>
@@ -105,12 +178,19 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>40</width>
-            <height>40</height>
+            <width>30</width>
+            <height>30</height>
            </size>
           </property>
-          <property name="text">
-           <string>Prev</string>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/icons/icons/previous.png</normaloff>:/icons/icons/previous.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
           </property>
          </widget>
         </item>
@@ -118,12 +198,22 @@
          <widget class="QPushButton" name="btnStop">
           <property name="maximumSize">
            <size>
-            <width>40</width>
-            <height>40</height>
+            <width>30</width>
+            <height>30</height>
            </size>
           </property>
           <property name="text">
-           <string>Stop</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/icons/icons/stop.png</normaloff>:/icons/icons/stop.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
           </property>
          </widget>
         </item>
@@ -131,12 +221,22 @@
          <widget class="QPushButton" name="btnNext">
           <property name="maximumSize">
            <size>
-            <width>40</width>
-            <height>40</height>
+            <width>30</width>
+            <height>30</height>
            </size>
           </property>
           <property name="text">
-           <string>Next</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/icons/icons/next.png</normaloff>:/icons/icons/next.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
           </property>
          </widget>
         </item>
@@ -150,8 +250,8 @@
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>16</width>
-            <height>40</height>
+            <width>12</width>
+            <height>30</height>
            </size>
           </property>
          </spacer>
@@ -160,12 +260,22 @@
          <widget class="QPushButton" name="btnShuffle">
           <property name="maximumSize">
            <size>
-            <width>40</width>
-            <height>40</height>
+            <width>30</width>
+            <height>30</height>
            </size>
           </property>
           <property name="text">
-           <string>shuffle</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/icons/icons/shuffle.png</normaloff>:/icons/icons/shuffle.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
           </property>
           <property name="checkable">
            <bool>true</bool>
@@ -176,12 +286,22 @@
          <widget class="QPushButton" name="btnLoop">
           <property name="maximumSize">
            <size>
-            <width>40</width>
-            <height>40</height>
+            <width>30</width>
+            <height>30</height>
            </size>
           </property>
           <property name="text">
-           <string>loop</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/icons/icons/loop.png</normaloff>:/icons/icons/loop.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
           </property>
          </widget>
         </item>
@@ -464,6 +584,9 @@
    <property name="toolTip">
     <string>Jump to previous media</string>
    </property>
+   <property name="shortcut">
+    <string>PgUp</string>
+   </property>
   </action>
   <action name="actionNext">
    <property name="icon">
@@ -475,6 +598,9 @@
    </property>
    <property name="toolTip">
     <string>Jump to next track</string>
+   </property>
+   <property name="shortcut">
+    <string>PgDown</string>
    </property>
   </action>
   <action name="actionIncreaseVolume">
