@@ -15,6 +15,8 @@ Basic media player functions
  
 Save playlist to file, Load playlist from a file
 
+Video: brightness / contrast
+
 UX:
 Save and use current size and position of the player window
 Save last openned file path to give user easy access to media files next startup
@@ -25,6 +27,7 @@ Window icon change according to playing/paused/stopped states
 
 Voulume level icons for 0(mute), 0-50, 50-100 
 
+Video actions only enabled if there is a video file loaded
 ---
 shortcuts
 

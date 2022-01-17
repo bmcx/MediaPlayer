@@ -53,6 +53,7 @@ MediaPlayer::MediaPlayer(QWidget *parent)
     setWindowTitle(Constants::appName);
     // update volume icons after loading saved values
     update_volumeIcons();
+    videoWidget->autoFillBackground();
 }
 
 MediaPlayer::~MediaPlayer()
@@ -178,6 +179,8 @@ void MediaPlayer::on_playerStateChanged(QMediaPlayer::State state)
     }
 }
 
+/// if the selected file only a audio file disable video related features
+/// if file is a video, enable video related features here
 void MediaPlayer::on_videoAvailableChanged(bool available)
 {
     if(available){
@@ -190,12 +193,73 @@ void MediaPlayer::on_videoAvailableChanged(bool available)
 
         connect(ui->actionFullscreen, SIGNAL(toggled(bool)), videoWidget, SLOT(setFullScreen(bool)));
         ui->actionFullscreen->setEnabled(true);
+        ui->menuBrightness->setEnabled(true);
+        ui->menuContrast->setEnabled(true);
     }else{
         ui->layoutMain->replaceWidget(videoWidget, ui->bg);
-        ui->actionFullscreen->setEnabled(false);
         disconnect(ui->actionFullscreen, SIGNAL(toggled(bool)), videoWidget, SLOT(setFullScreen(bool)));
+        ui->actionFullscreen->setEnabled(false);
+        ui->menuBrightness->setEnabled(false);
+        ui->menuContrast->setEnabled(false);
     }
     qDebug() << available;
+}
+
+
+/// read the saved configuration for media player main window
+void MediaPlayer::writeSettings()
+{
+    QSettings settings(Constants::creator, Constants::appName);
+
+    settings.beginGroup("Main");
+    // save current window size and position to use in next startup
+    settings.setValue("window_size", size());
+    settings.setValue("window_possition", pos());
+    // save last openned file path
+    settings.setValue("lastPath", lastPath);
+    // save volume level
+    settings.setValue("player_volume", player->instance->volume());
+    settings.endGroup();
+}
+
+/// write changes to the settings
+void MediaPlayer::readSettings()
+{
+    QSettings settings(Constants::creator, Constants::appName);
+
+    settings.beginGroup("Main");
+    // restore size and position from settings, if they don't exists use default values
+    resize(settings.value("window_size", QSize(850, 460)).toSize());
+    move(settings.value("window_possition", QPoint(200, 200)).toPoint());
+    // last opened file path, if not found uses OS's homepath as the default value
+    lastPath = settings.value("lastPath", QDir::homePath()).toString();
+    // load the stored volume or default to 100
+    player->instance->setVolume(settings.value("player_volume", 100).toInt());
+    settings.endGroup();
+}
+
+/// overrides the default close event to save changes
+void MediaPlayer::closeEvent (QCloseEvent *event){
+    // store changed settings
+    writeSettings();
+}
+
+/// update volume icons with current state of the player
+void MediaPlayer::update_volumeIcons()
+{
+    int volume = player->instance->volume();
+    // check if the player is muted or not
+    if(ui->actionMute->isChecked()){
+        ui->lblVolumeIcon->setPixmap(QPixmap(Constants::volumeMuteIcon));
+    }else{
+        if(volume > 50){
+            ui->lblVolumeIcon->setPixmap(QPixmap(Constants::volumeUpIcon));
+        }else if(volume == 0){
+            ui->lblVolumeIcon->setPixmap(QPixmap(Constants::volumeMuteIcon));
+        }else{
+            ui->lblVolumeIcon->setPixmap(QPixmap(Constants::volumeDownIcon));
+        }
+    }
 }
 
 // menu actions
@@ -284,59 +348,43 @@ void MediaPlayer::on_actionOpenPlaylist_triggered()
     player->instance->playlist()->load(QUrl::fromLocalFile(filename));
 }
 
-/// read the saved configuration for media player main window
-void MediaPlayer::writeSettings()
+/// video brighness increase
+void MediaPlayer::on_actionBIncrease_triggered()
 {
-    QSettings settings(Constants::creator, Constants::appName);
-
-    settings.beginGroup("Main");
-    // save current window size and position to use in next startup
-    settings.setValue("window_size", size());
-    settings.setValue("window_possition", pos());
-    // save last openned file path
-    settings.setValue("lastPath", lastPath);
-    // save volume level
-    settings.setValue("player_volume", player->instance->volume());
-    settings.endGroup();
+    int brightness = videoWidget->brightness();
+    if(brightness<100) videoWidget->setBrightness(brightness+5);
 }
 
-/// write changes to the settings
-void MediaPlayer::readSettings()
+/// resets video brightness to defaults
+void MediaPlayer::on_actionBReset_triggered()
 {
-    QSettings settings(Constants::creator, Constants::appName);
-
-    settings.beginGroup("Main");
-    // restore size and position from settings, if they don't exists use default values
-    resize(settings.value("window_size", QSize(850, 460)).toSize());
-    move(settings.value("window_possition", QPoint(200, 200)).toPoint());
-    // last opened file path, if not found uses OS's homepath as the default value
-    lastPath = settings.value("lastPath", QDir::homePath()).toString();
-    // load the stored volume or default to 100
-    player->instance->setVolume(settings.value("player_volume", 100).toInt());
-    settings.endGroup();
+    videoWidget->setBrightness(0);
 }
 
-/// overrides the default close event to save changes
-void MediaPlayer::closeEvent (QCloseEvent *event){
-    // store changed settings
-    writeSettings();
+/// decrease video brightness
+void MediaPlayer::on_actionBDecrease_triggered()
+{
+    int brightness = videoWidget->brightness();
+    if(brightness>-100) videoWidget->setBrightness(brightness-5);
 }
 
-/// update volume icons with current state of the player
-void MediaPlayer::update_volumeIcons()
+/// increase video contrast
+void MediaPlayer::on_actionCIncrease_triggered()
 {
-    int volume = player->instance->volume();
-    // check if the player is muted or not
-    if(ui->actionMute->isChecked()){
-        ui->lblVolumeIcon->setPixmap(QPixmap(Constants::volumeMuteIcon));
-    }else{
-        if(volume > 50){
-            ui->lblVolumeIcon->setPixmap(QPixmap(Constants::volumeUpIcon));
-        }else if(volume == 0){
-            ui->lblVolumeIcon->setPixmap(QPixmap(Constants::volumeMuteIcon));
-        }else{
-            ui->lblVolumeIcon->setPixmap(QPixmap(Constants::volumeDownIcon));
-        }
-    }
+    int contrast = videoWidget->contrast();
+    if(contrast<100) videoWidget->setContrast(contrast+5);
+}
+
+/// reset video contrast
+void MediaPlayer::on_actionCReset_triggered()
+{
+    videoWidget->setContrast(0);
+}
+
+/// decrease video contrast
+void MediaPlayer::on_actionCDecrease_triggered()
+{
+    int contrast = videoWidget->contrast();
+    if(contrast>-100) videoWidget->setContrast(contrast-5);
 }
 

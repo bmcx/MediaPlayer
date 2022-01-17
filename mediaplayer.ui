@@ -539,6 +539,9 @@
      <string>Video</string>
     </property>
     <widget class="QMenu" name="menuBrightness">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="title">
       <string>Brightness</string>
      </property>
@@ -547,6 +550,9 @@
      <addaction name="actionBDecrease"/>
     </widget>
     <widget class="QMenu" name="menuContrast">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="title">
       <string>Contrast</string>
      </property>
@@ -802,30 +808,48 @@
    <property name="text">
     <string>Increase</string>
    </property>
+   <property name="shortcut">
+    <string>Shift+M</string>
+   </property>
   </action>
   <action name="actionBReset">
    <property name="text">
     <string>Reset</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+B</string>
    </property>
   </action>
   <action name="actionBDecrease">
    <property name="text">
     <string>Decrease</string>
    </property>
+   <property name="shortcut">
+    <string>Shift+N</string>
+   </property>
   </action>
   <action name="actionCIncrease">
    <property name="text">
     <string>Increase</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+X</string>
    </property>
   </action>
   <action name="actionCReset">
    <property name="text">
     <string>Reset</string>
    </property>
+   <property name="shortcut">
+    <string>Shift+C</string>
+   </property>
   </action>
   <action name="actionCDecrease">
    <property name="text">
     <string>Decrease</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+Z</string>
    </property>
   </action>
  </widget>

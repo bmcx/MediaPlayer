@@ -56,6 +56,18 @@ private slots:
 
     void on_actionOpenPlaylist_triggered();
 
+    void on_actionBIncrease_triggered();
+
+    void on_actionBReset_triggered();
+
+    void on_actionBDecrease_triggered();
+
+    void on_actionCIncrease_triggered();
+
+    void on_actionCReset_triggered();
+
+    void on_actionCDecrease_triggered();
+
 private:
     Ui::MediaPlayer *ui;
     PlayerController *player;
