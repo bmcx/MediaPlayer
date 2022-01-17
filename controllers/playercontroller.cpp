@@ -4,7 +4,7 @@ PlayerController::PlayerController(QObject *parent)
 {
     instance = new QMediaPlayer(parent);
     playlist = new QMediaPlaylist(instance);
-    playlistItems = new  QStringList();
+    playlistModel = new QStandardItemModel(parent);
     instance->setPlaylist(playlist);
     // set initial playback rate to 1
     instance->setPlaybackRate(1);
@@ -37,8 +37,10 @@ void PlayerController::stop()
 void PlayerController::addToPlaylist(QStringList paths)
 {
     for(const QString & path: paths){
+        QList<QStandardItem *> items;
+        items.append(new QStandardItem(QDir(path).dirName()));
+        items.append(new QStandardItem(path));
         playlist->addMedia(QMediaContent(QUrl::fromLocalFile(path)));
-        playlistItems->append(path);
     }
 }
 
