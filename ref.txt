@@ -14,13 +14,14 @@ Basic media player functions
  - Select files
  
 Save playlist to file, Load playlist from a file
-
+clear current playlist
 Video: brightness / contrast
 
 UX:
 Save and use current size and position of the player window
 Save last openned file path to give user easy access to media files next startup
 Save last updated volume value 
+Save last playlist openned or not
 
 Window title shows playing filename
 Window icon change according to playing/paused/stopped states
@@ -36,6 +37,7 @@ Left/Right arrow keys for seek backward/forward 5 seconds
 PageDown/PageUp keys for next/previous media
 M for mute
 
+Ctrl+L for toggling playlist
 ---
 
 bug: clicking on progress slider doesn't move head clicked position
@@ -45,10 +47,7 @@ bug: QVideoWidget's fullscreen state will open another window and the current wi
 ---
 resources
 https://stackoverflow.com/a/55761192 < for formatting seconds
-https://stackoverflow.com/a/52151020 < video widget double click fullscreen
-https://www.youtube.com/watch?v=TNIkeFfzH-g&ab_channel=VoidRealms
+https://www.youtube.com/watch?v=6KtOzh0StTc&list=PL2D1942A4688E9D63&ab_channel=VoidRealms < Qt Tutorials
+https://evileg.com/en/post/155/ < Qt media player
 
 ----
-
-https://stackoverflow.com/questions/53105343/is-it-possible-to-add-a-custom-widget-into-a-qlistview
-https://github.com/scopchanov/SO-MessageLog
