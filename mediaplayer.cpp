@@ -36,6 +36,7 @@ MediaPlayer::MediaPlayer(QWidget *parent)
     connect(ui->actionPrevious, SIGNAL(triggered()), player->instance->playlist(), SLOT(previous()));
     connect(ui->actionStop, SIGNAL(triggered()), player->instance, SLOT(stop()));
     connect(ui->actionNext, SIGNAL(triggered()), player->instance->playlist(), SLOT(next()));
+    connect(ui->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
     // statusbar widget setup
     ui->statusbar->addPermanentWidget(lblNowPlaying, 1);
@@ -447,3 +448,14 @@ void MediaPlayer::on_actionClearPlaylist_triggered()
     }
 }
 
+
+void MediaPlayer::on_actionHelp_triggered()
+{
+
+}
+
+
+void MediaPlayer::on_actionAbout_triggered()
+{
+
+}
