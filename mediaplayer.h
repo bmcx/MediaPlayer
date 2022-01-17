@@ -60,8 +60,9 @@ private slots:
     void on_actionCIncrease_triggered();
     void on_actionCReset_triggered();
     void on_actionCDecrease_triggered();
-
     void on_actionClearPlaylist_triggered();
+    void on_actionHelp_triggered();
+    void on_actionAbout_triggered();
 
 private:
     Ui::MediaPlayer *ui;
