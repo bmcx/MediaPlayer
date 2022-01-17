@@ -35,7 +35,7 @@
      <number>0</number>
     </property>
     <item>
-     <layout class="QHBoxLayout" name="layoutMain" stretch="0,0">
+     <layout class="QHBoxLayout" name="layoutMain" stretch="6">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -43,42 +43,49 @@
        <enum>QLayout::SetMaximumSize</enum>
       </property>
       <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
+       <layout class="QHBoxLayout" name="layoutVideo">
+        <property name="spacing">
+         <number>0</number>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QLabel" name="bg">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QLabel { background-color : black; color : white; }</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="pixmap">
-         <pixmap resource="resources.qrc">:/icons/icons/app_icon_w.png</pixmap>
-        </property>
-        <property name="scaledContents">
-         <bool>false</bool>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="bg">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLabel { background-color : black; color : white; }</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="pixmap">
+           <pixmap resource="resources.qrc">:/icons/icons/app_icon_w.png</pixmap>
+          </property>
+          <property name="scaledContents">
+           <bool>false</bool>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>
@@ -387,6 +394,38 @@
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="btnPlaylist">
+          <property name="maximumSize">
+           <size>
+            <width>28</width>
+            <height>28</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/icons/icons/playlist.png</normaloff>:/icons/icons/playlist.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>22</width>
+            <height>22</height>
+           </size>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+L</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
          <spacer name="space_3">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -500,6 +539,7 @@
     <addaction name="actionOpenFile"/>
     <addaction name="actionOpenPlaylist"/>
     <addaction name="separator"/>
+    <addaction name="actionClearPlaylist"/>
     <addaction name="actionSavePlaylistToFile"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
@@ -592,7 +632,7 @@
      <normaloff>:/icons/icons/save.png</normaloff>:/icons/icons/save.png</iconset>
    </property>
    <property name="text">
-    <string>Save Playlist To File...</string>
+    <string>Save Playlist to a File...</string>
    </property>
    <property name="toolTip">
     <string>Save current playlist to a file</string>
@@ -850,6 +890,11 @@
    </property>
    <property name="shortcut">
     <string>Shift+Z</string>
+   </property>
+  </action>
+  <action name="actionClearPlaylist">
+   <property name="text">
+    <string>Clear Playlist</string>
    </property>
   </action>
  </widget>

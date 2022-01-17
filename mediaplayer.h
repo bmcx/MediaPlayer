@@ -8,6 +8,8 @@
 #include <QLabel>
 #include <QStandardItemModel>
 #include <QCloseEvent>
+#include <QTableView>
+#include <QHeaderView>
 
 #include "controllers/playercontroller.h"
 #include "constants.h"
@@ -39,6 +41,7 @@ private slots:
     void on_btnLoop_toggled(bool checked);
     void on_playerStateChanged(QMediaPlayer::State state);
     void on_videoAvailableChanged(bool available);
+    void on_btnPlaylist_toggled(bool checked);
 
     void on_actionPSFaster_triggered();
     void on_actionPSNormal_triggered();
@@ -49,24 +52,16 @@ private slots:
     void on_actionIncreaseVolume_triggered();
     void on_actionDecreaseVolume_triggered();
     void on_actionMute_toggled(bool value);
-
-
-
     void on_actionSavePlaylistToFile_triggered();
-
     void on_actionOpenPlaylist_triggered();
-
     void on_actionBIncrease_triggered();
-
     void on_actionBReset_triggered();
-
     void on_actionBDecrease_triggered();
-
     void on_actionCIncrease_triggered();
-
     void on_actionCReset_triggered();
-
     void on_actionCDecrease_triggered();
+
+    void on_actionClearPlaylist_triggered();
 
 private:
     Ui::MediaPlayer *ui;
@@ -75,6 +70,7 @@ private:
     QString lastPath;
     QLabel *lblNowPlaying;
     QLabel *lblPlaybackRate;
+    QTableView *tablePlaylist;
 
     void readSettings();
     void writeSettings();

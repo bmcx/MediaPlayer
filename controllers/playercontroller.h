@@ -5,6 +5,7 @@
 #include <QMediaPlaylist>
 #include <QFileDialog>
 #include <QStandardItemModel>
+#include <QMessageBox>
 
 class PlayerController
 {
@@ -17,9 +18,12 @@ public:
     void togglePlayPause();
     void stop();
     void addToPlaylist(QStringList paths);
+    void laodPlaylist(QString path);
+    void clearPlaylist();
 
 public slots:
     void changePositionBy(int value);
+    void on_videoError();
 
 private:
     QMediaPlaylist *playlist;

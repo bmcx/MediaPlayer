@@ -9,6 +9,8 @@ MediaPlayer::MediaPlayer(QWidget *parent)
     player = new PlayerController(this);
     lblNowPlaying = new QLabel(this);
     lblPlaybackRate = new QLabel(this);
+    tablePlaylist = new QTableView();
+    videoWidget = new QVideoWidget();
 
     // connections for the signals from qmediaplayey instance
     connect(player->instance, SIGNAL(positionChanged(qint64)), this, SLOT(on_positionChanged(qint64)));
@@ -22,6 +24,7 @@ MediaPlayer::MediaPlayer(QWidget *parent)
 
     // playlist connections
     connect(player->instance->playlist(), SIGNAL(mediaChanged(int,int)), this, SLOT(on_playlistUpdated()));
+    connect(player->instance->playlist(), SIGNAL(currentIndexChanged(int)), tablePlaylist, SLOT(selectRow(int)));
 
     // ui button connections
     connect(ui->btnPrev, SIGNAL(clicked()), player->instance->playlist(), SLOT(previous()));
@@ -41,11 +44,12 @@ MediaPlayer::MediaPlayer(QWidget *parent)
     // set a default value for the label
     lblPlaybackRate->setText("1.00x");
 
-    // playlistModel = new QStringListModel(this);
-
-    videoWidget = new QVideoWidget();
     ui->layoutMain->setAlignment(Qt::AlignCenter);
+    // set the video output widget
     player->instance->setVideoOutput(videoWidget);
+
+    // attach playlist model to view
+    tablePlaylist->setModel(player->playlistModel);
 
     // load saved settings
     readSettings();
@@ -54,6 +58,20 @@ MediaPlayer::MediaPlayer(QWidget *parent)
     // update volume icons after loading saved values
     update_volumeIcons();
     videoWidget->autoFillBackground();
+
+    // set playlist table options
+    tablePlaylist->hideColumn(1); // hides the file path in playlist items
+    tablePlaylist->verticalHeader()->setVisible(false);
+    tablePlaylist->setSelectionBehavior(QAbstractItemView::SelectRows);
+    tablePlaylist->setSelectionMode(QAbstractItemView::SingleSelection);
+    tablePlaylist->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    tablePlaylist->horizontalHeader()->setStretchLastSection(true);
+
+    // bind playlist ui click event to the players playlist
+    connect(tablePlaylist, &QTableView::doubleClicked, [this](const QModelIndex &index){
+        player->instance->playlist()->setCurrentIndex(index.row());
+        player->instance->play();
+    });
 }
 
 MediaPlayer::~MediaPlayer()
@@ -121,6 +139,11 @@ void MediaPlayer::on_playbackRateChanged(qreal rate)
 
 void MediaPlayer::on_btnPlay_clicked()
 {
+    // if there's no files on playlist, show open file dialog
+    if(player->playlistModel->rowCount() == 0){
+        on_actionOpenFile_triggered();
+        return;
+    }
     player->togglePlayPause();
 }
 
@@ -184,25 +207,43 @@ void MediaPlayer::on_playerStateChanged(QMediaPlayer::State state)
 void MediaPlayer::on_videoAvailableChanged(bool available)
 {
     if(available){
-        ui->layoutMain->replaceWidget(ui->bg, videoWidget);
+        videoWidget->show();
+        ui->layoutVideo->replaceWidget(ui->bg, videoWidget);
         // a bit of a workaround to strech player widget by using vspacer
         // use setStrech to hide spacer width
-        ui->layoutMain->setStretch(0,0);
+        ui->layoutVideo->setStretch(0,0);
         // setting the strech of the video widget to full
-        ui->layoutMain->setStretch(1,1);
+        ui->layoutVideo->setStretch(1,1);
 
         connect(ui->actionFullscreen, SIGNAL(toggled(bool)), videoWidget, SLOT(setFullScreen(bool)));
         ui->actionFullscreen->setEnabled(true);
         ui->menuBrightness->setEnabled(true);
         ui->menuContrast->setEnabled(true);
     }else{
-        ui->layoutMain->replaceWidget(videoWidget, ui->bg);
+        ui->layoutVideo->replaceWidget(videoWidget, ui->bg);
+        videoWidget->hide();
         disconnect(ui->actionFullscreen, SIGNAL(toggled(bool)), videoWidget, SLOT(setFullScreen(bool)));
         ui->actionFullscreen->setEnabled(false);
         ui->menuBrightness->setEnabled(false);
         ui->menuContrast->setEnabled(false);
     }
     qDebug() << available;
+}
+
+/// show/hide playlist
+void MediaPlayer::on_btnPlaylist_toggled(bool checked)
+{
+    if(checked){
+        ui->layoutMain->addWidget(tablePlaylist);
+        ui->layoutMain->setStretch(0,7);
+        ui->layoutMain->setStretch(1,3);
+        tablePlaylist->show();
+    }else{
+        ui->layoutMain->removeWidget(tablePlaylist);
+        ui->layoutMain->setStretch(0,1);
+        ui->layoutMain->setStretch(1,0);
+        tablePlaylist->hide();
+    }
 }
 
 
@@ -219,6 +260,8 @@ void MediaPlayer::writeSettings()
     settings.setValue("lastPath", lastPath);
     // save volume level
     settings.setValue("player_volume", player->instance->volume());
+    // save playlist openned state
+    settings.setValue("playlist_openned", ui->btnPlaylist->isChecked());
     settings.endGroup();
 }
 
@@ -235,6 +278,10 @@ void MediaPlayer::readSettings()
     lastPath = settings.value("lastPath", QDir::homePath()).toString();
     // load the stored volume or default to 100
     player->instance->setVolume(settings.value("player_volume", 100).toInt());
+    // load playlist openned state
+    bool playlistOpenned =settings.value("playlist_openned", true).toBool();
+    ui->btnPlaylist->setChecked(playlistOpenned);
+    on_btnPlaylist_toggled(playlistOpenned);
     settings.endGroup();
 }
 
@@ -345,7 +392,7 @@ void MediaPlayer::on_actionSavePlaylistToFile_triggered()
 void MediaPlayer::on_actionOpenPlaylist_triggered()
 {
     QString filename = QFileDialog::getOpenFileName(this, "Open a File", lastPath, Constants::acceptedPlaylistFileTypes);
-    player->instance->playlist()->load(QUrl::fromLocalFile(filename));
+    player->laodPlaylist(filename);
 }
 
 /// video brighness increase
@@ -386,5 +433,17 @@ void MediaPlayer::on_actionCDecrease_triggered()
 {
     int contrast = videoWidget->contrast();
     if(contrast>-100) videoWidget->setContrast(contrast-5);
+}
+
+/// confirm before clearing the playlist
+void MediaPlayer::on_actionClearPlaylist_triggered()
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Are you sure?", "Current playlist will be cleared.",
+                                  QMessageBox::Ok|QMessageBox::Cancel);
+    if (reply == QMessageBox::Ok) {
+        player->clearPlaylist();
+        tablePlaylist->update();
+    }
 }
 
