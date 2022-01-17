@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>849</width>
-    <height>466</height>
+    <width>908</width>
+    <height>586</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -116,12 +116,15 @@
            </size>
           </property>
           <property name="text">
-           <string>--:--</string>
+           <string>00:00</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QSlider" name="sliderProgress">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -151,7 +154,7 @@
            </size>
           </property>
           <property name="text">
-           <string>--:--</string>
+           <string>00:00</string>
           </property>
          </widget>
         </item>
@@ -448,8 +451,8 @@
            <widget class="QLabel" name="lblVolumeIcon">
             <property name="maximumSize">
              <size>
-              <width>16</width>
-              <height>16</height>
+              <width>22</width>
+              <height>22</height>
              </size>
             </property>
             <property name="text">
@@ -486,8 +489,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>849</width>
-     <height>21</height>
+     <width>908</width>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMedia">
@@ -535,10 +538,26 @@
     <property name="title">
      <string>Video</string>
     </property>
+    <widget class="QMenu" name="menuBrightness">
+     <property name="title">
+      <string>Brightness</string>
+     </property>
+     <addaction name="actionBIncrease"/>
+     <addaction name="actionBReset"/>
+     <addaction name="actionBDecrease"/>
+    </widget>
+    <widget class="QMenu" name="menuContrast">
+     <property name="title">
+      <string>Contrast</string>
+     </property>
+     <addaction name="actionCIncrease"/>
+     <addaction name="actionCReset"/>
+     <addaction name="actionCDecrease"/>
+    </widget>
     <addaction name="actionFullscreen"/>
     <addaction name="separator"/>
-    <addaction name="actionBrightness"/>
-    <addaction name="actionContrast"/>
+    <addaction name="menuBrightness"/>
+    <addaction name="menuContrast"/>
    </widget>
    <addaction name="menuMedia"/>
    <addaction name="menuPlayback"/>
@@ -779,14 +798,34 @@
     <string>Return</string>
    </property>
   </action>
-  <action name="actionBrightness">
+  <action name="actionBIncrease">
    <property name="text">
-    <string>Brightness</string>
+    <string>Increase</string>
    </property>
   </action>
-  <action name="actionContrast">
+  <action name="actionBReset">
    <property name="text">
-    <string>Contrast</string>
+    <string>Reset</string>
+   </property>
+  </action>
+  <action name="actionBDecrease">
+   <property name="text">
+    <string>Decrease</string>
+   </property>
+  </action>
+  <action name="actionCIncrease">
+   <property name="text">
+    <string>Increase</string>
+   </property>
+  </action>
+  <action name="actionCReset">
+   <property name="text">
+    <string>Reset</string>
+   </property>
+  </action>
+  <action name="actionCDecrease">
+   <property name="text">
+    <string>Decrease</string>
    </property>
   </action>
  </widget>

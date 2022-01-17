@@ -192,9 +192,6 @@ void MediaPlayer::on_videoAvailableChanged(bool available)
         ui->actionFullscreen->setEnabled(true);
     }else{
         ui->layoutMain->replaceWidget(videoWidget, ui->bg);
-        ui->layoutMain->setStretch(0,0);
-        ui->layoutMain->setStretch(1,0);
-        ui->layoutMain->setStretch(2,0);
         ui->actionFullscreen->setEnabled(false);
         disconnect(ui->actionFullscreen, SIGNAL(toggled(bool)), videoWidget, SLOT(setFullScreen(bool)));
     }

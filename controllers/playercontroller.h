@@ -4,6 +4,7 @@
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
 #include <QFileDialog>
+#include <QStandardItemModel>
 
 class PlayerController
 {
@@ -11,7 +12,7 @@ public:
     PlayerController(QObject *parent);
 
     QMediaPlayer *instance;
-    QStringList *playlistItems;
+    QStandardItemModel *playlistModel;
 
     void togglePlayPause();
     void stop();

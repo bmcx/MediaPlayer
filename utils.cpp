@@ -6,7 +6,7 @@ Utils::Utils() {}
 /// only if h>0 the hh:mm:ss format will be used
 QString Utils::formatDuration(qint64 duration)
 {
-    QString timeString = "--:--";
+    QString timeString = "00:00";
 
     int totalSeconds = duration/1000;
     int seconds = totalSeconds % 60;
