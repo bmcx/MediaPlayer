@@ -33,3 +33,8 @@ DISTFILES +=
 
 RESOURCES += \
     resources.qrc
+
+# windows icon
+win32 {
+    RC_FILE = mediaplayer.rc
+}

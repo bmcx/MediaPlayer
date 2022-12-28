@@ -209,6 +209,7 @@ void MediaPlayer::on_videoAvailableChanged(bool available)
 {
     if(available){
         videoWidget->show();
+        ui->bg->hide();
         ui->layoutVideo->replaceWidget(ui->bg, videoWidget);
         // a bit of a workaround to strech player widget by using vspacer
         // use setStrech to hide spacer width
@@ -223,12 +224,12 @@ void MediaPlayer::on_videoAvailableChanged(bool available)
     }else{
         ui->layoutVideo->replaceWidget(videoWidget, ui->bg);
         videoWidget->hide();
+        ui->bg->show();
         disconnect(ui->actionFullscreen, SIGNAL(toggled(bool)), videoWidget, SLOT(setFullScreen(bool)));
         ui->actionFullscreen->setEnabled(false);
         ui->menuBrightness->setEnabled(false);
         ui->menuContrast->setEnabled(false);
     }
-    qDebug() << available;
 }
 
 /// show/hide playlist
@@ -401,12 +402,14 @@ void MediaPlayer::on_actionBIncrease_triggered()
 {
     int brightness = videoWidget->brightness();
     if(brightness<100) videoWidget->setBrightness(brightness+5);
+     ui->menuBrightness->setTitle(QString("Brightness: %1\%").arg(brightness+5));
 }
 
 /// resets video brightness to defaults
 void MediaPlayer::on_actionBReset_triggered()
 {
     videoWidget->setBrightness(0);
+     ui->menuBrightness->setTitle("Brightness");
 }
 
 /// decrease video brightness
@@ -414,6 +417,7 @@ void MediaPlayer::on_actionBDecrease_triggered()
 {
     int brightness = videoWidget->brightness();
     if(brightness>-100) videoWidget->setBrightness(brightness-5);
+     ui->menuBrightness->setTitle(QString("Brightness: %1\%").arg(brightness+5));
 }
 
 /// increase video contrast
@@ -421,12 +425,14 @@ void MediaPlayer::on_actionCIncrease_triggered()
 {
     int contrast = videoWidget->contrast();
     if(contrast<100) videoWidget->setContrast(contrast+5);
+    ui->menuContrast->setTitle(QString("Contrast: %1\%").arg(contrast+5));
 }
 
 /// reset video contrast
 void MediaPlayer::on_actionCReset_triggered()
 {
     videoWidget->setContrast(0);
+    ui->menuContrast->setTitle("Contrast");
 }
 
 /// decrease video contrast
@@ -434,6 +440,7 @@ void MediaPlayer::on_actionCDecrease_triggered()
 {
     int contrast = videoWidget->contrast();
     if(contrast>-100) videoWidget->setContrast(contrast-5);
+    ui->menuContrast->setTitle(QString("Contrast: %1\%").arg(contrast-5));
 }
 
 /// confirm before clearing the playlist
@@ -449,13 +456,13 @@ void MediaPlayer::on_actionClearPlaylist_triggered()
 }
 
 
-void MediaPlayer::on_actionHelp_triggered()
-{
-
-}
-
-
 void MediaPlayer::on_actionAbout_triggered()
 {
-
+    QMessageBox::about(this,Constants::appName, "A simple media player inspired by VLC.\nCreated using Qt framework for C++\nEnjoy!\n");
 }
+
+void MediaPlayer::on_actionHelp_triggered()
+{
+    // open help?!
+}
+

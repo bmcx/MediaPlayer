@@ -1,6 +1,6 @@
 #include "constants.h"
 
-const QString Constants::acceptedFileTypes = "Audio Files(*.mp3);;Video Files(*.mp4);;All Files(*.*)";
+const QString Constants::acceptedFileTypes = "Audio Files(*.mp3 *.wav *.wmv *.m4a *.webm);;Video Files(*.mp4 *.avi *.mkv *.mpg);;All Files(*.*)";
 const QString Constants::acceptedPlaylistFileTypes = "Playlist File(*.m3u);;All Files(*.*)";
 
 const QString Constants::creator = "BMC";
