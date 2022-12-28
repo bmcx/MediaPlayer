@@ -1,0 +1,53 @@
+show now playing on bottom status bar
+plaing duration on task bar
+
+---
+
+seperated qmediaplayer to another file called player controller for better code structure
+added utils class with static members for adding reusable methods
+seperated constant values to another file, to support code reuse
+uses QSettings to store locally user changed values 
+
+---
+features
+Basic media player functions
+ - Select files
+ 
+Save playlist to file, Load playlist from a file
+clear current playlist
+Video: brightness / contrast
+
+UX:
+Save and use current size and position of the player window
+Save last openned file path to give user easy access to media files next startup
+Save last updated volume value 
+Save last playlist openned or not
+
+Window title shows playing filename
+Window icon change according to playing/paused/stopped states
+
+Voulume level icons for 0(mute), 0-50, 50-100 
+
+Video actions only enabled if there is a video file loaded
+---
+shortcuts
+
+Up/Down arrow keys for volume increase/decrease
+Left/Right arrow keys for seek backward/forward 5 seconds
+PageDown/PageUp keys for next/previous media
+M for mute
+
+Ctrl+L for toggling playlist
+---
+
+bug: clicking on progress slider doesn't move head clicked position
+bug: sometimes the audio duration returned from the slot 'durationChanged' and 'positionChanged' is larger than the actual length of the audio.
+bug: QVideoWidget's fullscreen state will open another window and the current window won't have focus so keybinds wouldn't work to leave from fullscreen mode.
+
+---
+resources
+https://stackoverflow.com/a/55761192 < for formatting seconds
+https://www.youtube.com/watch?v=6KtOzh0StTc&list=PL2D1942A4688E9D63&ab_channel=VoidRealms < Qt Tutorials
+https://evileg.com/en/post/155/ < Qt media player
+
+----
